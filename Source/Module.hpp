@@ -84,7 +84,7 @@ protected:
 class ModuleInterface : public Component, ChangeListener, private Timer {
 public:
     ModuleInterface(ModuleBackend &b);
-    virtual ~ModuleInterface();
+    virtual ~ModuleInterface() override;
     
     virtual void changeListenerCallback(ChangeBroadcaster *source) override;
     virtual void resized() override;

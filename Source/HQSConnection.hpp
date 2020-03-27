@@ -25,7 +25,7 @@ class PingThread;
 class HQSConnection : public InterprocessConnection {
 public:
     HQSConnection(ModuleBackend& p);
-    ~HQSConnection();
+    virtual ~HQSConnection() override;
     
     virtual void messageReceived(const MemoryBlock& message) override;
     virtual void connectionMade() override;

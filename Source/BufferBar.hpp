@@ -24,10 +24,10 @@
 class BufferBar : public Component, public Timer{
 public:
     BufferBar(ModuleBackend& p);
-    ~BufferBar();
+    virtual ~BufferBar() override;
 
-    void paint (Graphics&);
-    void resized();
+    virtual void paint (Graphics&) override;
+    virtual void resized() override;
     
     virtual void timerCallback() override;
 

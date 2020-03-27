@@ -18,7 +18,8 @@
 
 #include "Module.hpp"
 
-ModuleBackend::ModuleBackend(PluginProcessor &processor) : proc(processor), buf(nullptr) {
+ModuleBackend::ModuleBackend(PluginProcessor &processor)
+        : buf(nullptr), proc(processor) {
     interface = nullptr;
     status.PushStatus(STATUS_INIT, "Initializing...", 5);
     fs = 44100;
@@ -31,18 +32,19 @@ ModuleBackend::~ModuleBackend(){
 }
 
 void ModuleBackend::prepareToPlay(double sampleRate, int samplesPerBlock) {
-    //
+    ignoreUnused(sampleRate);
+    ignoreUnused(samplesPerBlock);
 }
 
 void ModuleBackend::processBlock(AudioBuffer<float> &audio) {
-    //
+    ignoreUnused(audio);
 }
 void ModuleBackend::releaseResources() {
     //
 }
 
 void ModuleBackend::SendAudioPacket(const MemoryBlock &message){
-    ((void)0); //Overridden in MBLocal (broadcast) and MBSession (unicast)
+    ignoreUnused(message); //Overridden in MBLocal (broadcast) and MBSession (unicast)
 }
 
 String ModuleBackend::AudioTypeToString(int32_t at){

@@ -25,7 +25,7 @@ class PluginEditor : public AudioProcessorEditor, public ChangeListener
 {
 public:
     PluginEditor(PluginProcessor &processor);
-    ~PluginEditor();
+    virtual ~PluginEditor() override;
 
     void paint (Graphics&) override;
     void resized() override;

@@ -23,7 +23,7 @@
 class SenderThread : public Thread {
 public:
     SenderThread(ModuleBackend& p, int sampleGap, int samplesPerPacket);
-    ~SenderThread();
+    virtual ~SenderThread() override;
     
     virtual void run() override;
     

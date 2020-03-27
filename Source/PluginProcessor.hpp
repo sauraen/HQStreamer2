@@ -28,7 +28,7 @@ class PluginProcessor : public AudioProcessor, public ChangeBroadcaster
 {
 public:
     PluginProcessor();
-    ~PluginProcessor();
+    virtual ~PluginProcessor() override;
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void processBlock(AudioBuffer<float>& audio, MidiBuffer& midi) override;

@@ -23,7 +23,7 @@
 class MBLocal : public ModuleBackend {
 public:
     MBLocal(PluginProcessor &processor);
-    virtual ~MBLocal();
+    virtual ~MBLocal() override;
     virtual ModuleType GetType() const override { return ModuleType::Local; }
     
     virtual void prepareToPlay(double sampleRate, int samplesPerBlock) override;

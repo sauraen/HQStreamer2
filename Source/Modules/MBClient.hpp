@@ -26,7 +26,7 @@ class HCClient;
 class MBClient : public ModuleBackend {
 public:
     MBClient(PluginProcessor &processor);
-    virtual ~MBClient();
+    virtual ~MBClient() override;
     virtual ModuleType GetType() const override { return ModuleType::Client; }
     
     virtual void prepareToPlay(double sampleRate, int samplesPerBlock) override;
@@ -53,7 +53,7 @@ private:
 class HCClient : public HQSConnection {
 public:
     HCClient(MBClient &p);
-    virtual ~HCClient();
+    virtual ~HCClient() override;
     
     virtual void connectionLost() override;
     

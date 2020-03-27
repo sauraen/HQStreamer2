@@ -19,7 +19,7 @@
 #include "CircBuffer.hpp"
 
 CircBuffer::CircBuffer(bool sender, int ch, int spls)
-        : sendermode(sender), channels(ch), length(spls) {
+        : channels(ch), sendermode(sender), length(spls) {
     data.setSize(4*channels*length);
     Reset();
 }

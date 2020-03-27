@@ -23,7 +23,7 @@
 class MBSession : public ModuleBackend {
 public:
     MBSession(PluginProcessor &processor);
-    virtual ~MBSession();
+    virtual ~MBSession() override;
     virtual ModuleType GetType() const override { return ModuleType::Session; }
     
     virtual void prepareToPlay(double sampleRate, int samplesPerBlock) override;

@@ -23,7 +23,7 @@
 class PingThread : public Thread {
 public:
     PingThread(HQSConnection& c);
-    ~PingThread();
+    virtual ~PingThread() override;
     
     virtual void run() override;
     

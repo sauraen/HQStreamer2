@@ -8,6 +8,5 @@ Builds/VisualStudio2017/*.user
 Builds/x64
 .DS_Store
 Builds/MacOSX/build
-Builds/MacOSX/BuskMagic.xcodeproj/xcuserdata
-Builds/MacOSX/BuskMagic.xcodeproj/xcshareddata
-Builds/MacOSX/BuskMagic.xcodeproj/project.xcworkspace
+xcuserdata/
+*.plist

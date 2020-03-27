@@ -44,7 +44,6 @@ void HQSConnection::messageReceived(const MemoryBlock& message){
         parent.status.PushStatus(STATUS_PACKETERR, "Bad size packet! " + String((int)message.getSize()), 30);
         return;
     }
-    int c, s;
     int32_t* s32ptr = (int32_t*)message.getData();
     int32_t size = s32ptr[0];
     if(size != (int32_t)message.getSize()){

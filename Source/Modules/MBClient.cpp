@@ -29,6 +29,7 @@ MBClient::~MBClient() {
     
 void MBClient::prepareToPlay(double sampleRate, int samplesPerBlock) {
     fs = (int32_t)sampleRate;
+    ignoreUnused(samplesPerBlock);
 }
 void MBClient::processBlock(AudioBuffer<float> &audio) {
     if(!connected){
@@ -120,7 +121,7 @@ void HCClient::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
         parent.status.PushStatus(STATUS_MISC, "No buffer (internal error)!", 30);
         return;
     }
-    int32_t nchannels, nsamples, fs;
+    int32_t nchannels = -1, nsamples = -1, fs;
     int c, s;
     int32_t* s32ptr = (int32_t*)packet.getData();
     if(type == PACKET_TYPE_ACKJOIN){

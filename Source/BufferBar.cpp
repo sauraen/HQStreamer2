@@ -38,7 +38,6 @@ void BufferBar::paint (Graphics& g){
     int length = parent.buf->Length();
     if(length <= 0) return;
     int readhead = parent.buf->GetReadHead();
-    int writehead = parent.buf->GetWriteHead();
     int fill = parent.buf->NumSplsFilled();
     
     float proportionFilled = (float)fill / (float)length;
@@ -55,7 +54,7 @@ void BufferBar::paint (Graphics& g){
     int nc = parent.buf->NumChannels();
     float rowheight = height / (float)nc;
     for(int c=0; c<nc; ++c){
-        uint32 s = readhead;
+        int s = readhead;
         float subpixel = 0.0f;
         float delta = (float)width / (float)length; //Pixels per sample
         float lastsubpixel = 0.0f;

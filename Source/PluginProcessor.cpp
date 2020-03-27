@@ -97,7 +97,7 @@ void PluginProcessor::getStateInformation (MemoryBlock& destData) { destData.set
 void PluginProcessor::setStateInformation (const void* data, int sizeInBytes) { ignoreUnused(data); jassert(sizeInBytes == 0); }
 const String PluginProcessor::getName() const { return JucePlugin_Name; }
 double PluginProcessor::getTailLengthSeconds() const { return 0.0; }
-bool PluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const { return true; }
+bool PluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const { ignoreUnused(layouts); return true; }
 bool PluginProcessor::acceptsMidi() const { return false; }
 bool PluginProcessor::producesMidi() const { return false; }
 bool PluginProcessor::isMidiEffect() const { return false; }

@@ -42,6 +42,7 @@ PluginEditor::~PluginEditor()
 }
 
 void PluginEditor::changeListenerCallback(ChangeBroadcaster *source){
+    ignoreUnused(source);
     changeModuleInterface();
 }
 void PluginEditor::changeModuleInterface(){
