@@ -42,17 +42,18 @@ void MBLocal::Connect(String session){
     jassert(!connected);
     sessionname = session;
     beginWaitingForSocket(HQS2_PORT);
-    status.PushStatus(STATUS_MISC, "Waiting for clients...", 30);
+    status.PushStatus(STATUS_EVENT, "Waiting for clients...", 30);
     connected = true;
     jassert(sender == nullptr);
     sender = new SenderThread(*this, 128, 256);
     sender->startThread();
+    proc.sendChangeMessage();
 }
 void MBLocal::Disconnect(HCLocal *conn){
     if(conn){
         conn->disconnect();
         conns.removeObject(conn);
-        status.PushStatus(STATUS_MISC, "A client disconnected", 30);
+        status.PushStatus(STATUS_EVENT, "A client disconnected", 30);
     }else if(connected){
         connected = false;
         stop();
@@ -62,7 +63,7 @@ void MBLocal::Disconnect(HCLocal *conn){
             conns.getLast()->disconnect();
             conns.removeLast();
         }
-        status.PushStatus(STATUS_MISC, "Disconnected", 30);
+        status.PushStatus(STATUS_EVENT, "Disconnected", 30);
     }
     proc.sendChangeMessage();
 }
@@ -70,7 +71,7 @@ void MBLocal::Disconnect(HCLocal *conn){
 InterprocessConnection *MBLocal::createConnectionObject(){
     HCLocal *conn = new HCLocal(*this);
     conns.add(conn);
-    status.PushStatus(STATUS_MISC, "A client has connected!", 30);
+    status.PushStatus(STATUS_EVENT, "A client has connected!", 30);
     return conn;
 }
 
@@ -107,7 +108,7 @@ void HCLocal::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
         int32_t *s32ptr = (int32_t*)packet2.getData();
         s32ptr[0] = 20;
         if(session != parent.sessionname){
-            parent.status.PushStatus(STATUS_BADSIZE, "Client tried to connect to bogus session " + session + "!");
+            parent.status.PushStatus(STATUS_BADAPARAM, "Client tried to connect to bogus session " + session + "!");
             s32ptr[1] = PACKET_TYPE_NAKJOIN;
             sendMessage(packet2);
             parent.Disconnect(this);

@@ -52,14 +52,15 @@ String MBClient::GetLatency(){
 void MBClient::SetLatency(String lstr){
     float r = -1.0f;
     if(lstr.endsWith("ms")){
-        r = 1000.0f * lstr.dropLastCharacters(2).getFloatValue();
+        r = 0.001f * lstr.dropLastCharacters(2).getFloatValue();
     }else if(lstr.endsWith("s")){
         r = lstr.dropLastCharacters(1).getFloatValue();
     }
-    if(r <= 0.0f){
+    if(r <= 0.0f || r >= 5.0f){
         status.PushStatus(STATUS_MISC, "Latency internal error!", 30);
         r = 0.5f;
     }
+    latencyratio = r;
 }
 
 void MBClient::Connect(String host, String session){
@@ -82,13 +83,14 @@ void MBClient::Connect(String host, String session){
         return;
     }
     status.ClearStatus(STATUS_NOCONNECT);
-    status.PushStatus(STATUS_MISC, "Sent join request...", 30);
+    status.PushStatus(STATUS_EVENT, "Sent join request...", 30);
 }
 void MBClient::Disconnect(){
     connected = false;
     if(conn){
         conn->disconnect();
     }
+    status.PushStatus(STATUS_DEBUG, "[Disconnected in client]", 30);
     proc.sendChangeMessage();
 }
 
@@ -101,8 +103,12 @@ HCClient::~HCClient() {
 }
 
 void HCClient::connectionLost(){
+    parent.status.PushStatus(STATUS_DEBUG, "[Disconnected HCClient]", 30);
     HQSConnection::connectionLost();
-    parent.Disconnect();
+    parent.status.PushStatus(STATUS_DEBUG, "[After super connectionLost()]", 30);
+    parent.connected = false;
+    parent.GetProc().sendChangeMessage();
+    parent.status.PushStatus(STATUS_DEBUG, "[After parent Disconnect()]", 30);
 }
 
 #define CHECK_PACKET_BOUNDS(i) if((i) >= packet.getSize()) { parent.status.PushStatus(STATUS_BADSIZE, "DPCM ran off end of packet!"); return; } ((void)0)

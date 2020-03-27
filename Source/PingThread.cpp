@@ -58,6 +58,7 @@ void PingThread::run(){
             }
         }
         conn.UpdatePingTime(pingtime);
+        if(threadShouldExit()) return;
         //Wait for a second
         wait(985 + Random::getSystemRandom().nextInt(30));
     }

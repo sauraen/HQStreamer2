@@ -74,7 +74,7 @@ MILocal::MILocal (MBLocal &b)
     txtSession->setBounds (128, 40, 264, 24);
 
     lblStats.reset (new Label ("lblStats",
-                               TRANS("X channels, YYY kHz")));
+                               TRANS("X channels, YYY kHz, ping ZZZ")));
     addAndMakeVisible (lblStats.get());
     lblStats->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
     lblStats->setJustificationType (Justification::centredLeft);
@@ -82,7 +82,7 @@ MILocal::MILocal (MBLocal &b)
     lblStats->setColour (TextEditor::textColourId, Colours::black);
     lblStats->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    lblStats->setBounds (0, 64, 160, 24);
+    lblStats->setBounds (0, 64, 232, 24);
 
     cbxFormat.reset (new ComboBox ("cbxFormat"));
     addAndMakeVisible (cbxFormat.get());
@@ -95,14 +95,14 @@ MILocal::MILocal (MBLocal &b)
     cbxFormat->addItem (TRANS("float32"), 3);
     cbxFormat->addListener (this);
 
-    cbxFormat->setBounds (160, 64, 120, 24);
+    cbxFormat->setBounds (232, 64, 80, 24);
 
     btnConnect.reset (new TextButton ("btnConnect"));
     addAndMakeVisible (btnConnect.get());
     btnConnect->setButtonText (TRANS("Start"));
     btnConnect->addListener (this);
 
-    btnConnect->setBounds (280, 64, 112, 24);
+    btnConnect->setBounds (312, 64, 80, 24);
 
 
     //[UserPreSize]
@@ -243,16 +243,16 @@ BEGIN_JUCER_METADATA
               multiline="0" retKeyStartsLine="0" readonly="0" scrollbars="1"
               caret="1" popupmenu="1"/>
   <LABEL name="lblStats" id="2cad943723b05d77" memberName="lblStats" virtualName=""
-         explicitFocusOrder="0" pos="0 64 160 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="X channels, YYY kHz" editableSingleClick="0"
+         explicitFocusOrder="0" pos="0 64 232 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="X channels, YYY kHz, ping ZZZ" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
   <COMBOBOX name="cbxFormat" id="13b5ed9dadb9b1f0" memberName="cbxFormat"
-            virtualName="" explicitFocusOrder="0" pos="160 64 120 24" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="232 64 80 24" editable="0"
             layout="33" items="DPCM&#10;int16&#10;float32" textWhenNonSelected=""
             textWhenNoItems="(no choices)"/>
   <TEXTBUTTON name="btnConnect" id="16362dc1c9d88ce6" memberName="btnConnect"
-              virtualName="" explicitFocusOrder="0" pos="280 64 112 24" buttonText="Start"
+              virtualName="" explicitFocusOrder="0" pos="312 64 80 24" buttonText="Start"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 
