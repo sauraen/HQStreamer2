@@ -19,13 +19,47 @@
 #pragma once
 
 #include "Module.hpp"
+#include "HQSConnection.hpp"
+#include "SenderThread.hpp"
 
-class MBLocal : public ModuleBackend {
+class HCLocal;
+
+class MBLocal : public ModuleBackend, public InterprocessConnectionServer {
 public:
     MBLocal(PluginProcessor &processor);
     virtual ~MBLocal() override;
     virtual ModuleType GetType() const override { return ModuleType::Local; }
+    virtual int ComputeBufLen() const override { return 20000; }
+    virtual bool IsSender() const override { return true; }
     
-    virtual void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     virtual void processBlock(AudioBuffer<float> &audio) override;
+    
+    virtual InterprocessConnection *createConnectionObject() override;
+    virtual void SendAudioPacket(const MemoryBlock &message) override;
+    
+    void Connect(String session);
+    void Disconnect(HCLocal *conn);
+    bool IsConnected() { return connected; }
+    String GetSessionName() { return sessionname; }
+private:
+    friend class HCLocal;
+    bool connected;
+    String sessionname;
+    
+    OwnedArray<HCLocal> conns;
+    SenderThread *sender;
+};
+
+class HCLocal : public HQSConnection {
+public:
+    HCLocal(MBLocal &p);
+    virtual ~HCLocal() override;
+    
+    virtual void connectionLost() override;
+    virtual void VdPacketReceived(const MemoryBlock& packet, int32_t type) override;
+    
+    inline bool IsValid() const { return valid; }
+private:
+    MBLocal &parent;
+    bool valid;
 };

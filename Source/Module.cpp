@@ -32,12 +32,16 @@ ModuleBackend::~ModuleBackend(){
 }
 
 void ModuleBackend::prepareToPlay(double sampleRate, int samplesPerBlock) {
-    ignoreUnused(sampleRate);
+    fs = (int32_t)sampleRate;
     ignoreUnused(samplesPerBlock);
 }
 
 void ModuleBackend::processBlock(AudioBuffer<float> &audio) {
-    ignoreUnused(audio);
+    int l = ComputeBufLen();
+    if(!buf || buf->NumChannels() != audio.getNumChannels() || buf->Length() != l){
+        const ScopedWriteLock lock(mutex);
+        buf.reset(new CircBuffer(IsSender(), audio.getNumChannels(), l));
+    }
 }
 void ModuleBackend::releaseResources() {
     //

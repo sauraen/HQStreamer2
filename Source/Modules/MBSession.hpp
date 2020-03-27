@@ -25,6 +25,8 @@ public:
     MBSession(PluginProcessor &processor);
     virtual ~MBSession() override;
     virtual ModuleType GetType() const override { return ModuleType::Session; }
+    virtual int ComputeBufLen() const override { return 20000; }
+    virtual bool IsSender() const override { return true; }
     
     virtual void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     virtual void processBlock(AudioBuffer<float> &audio) override;

@@ -26,20 +26,12 @@ MBClient::MBClient(PluginProcessor &processor) : ModuleBackend(processor), conne
 MBClient::~MBClient() {
     Disconnect();
 }
-    
-void MBClient::prepareToPlay(double sampleRate, int samplesPerBlock) {
-    fs = (int32_t)sampleRate;
-    ignoreUnused(samplesPerBlock);
-}
+
 void MBClient::processBlock(AudioBuffer<float> &audio) {
+    ModuleBackend::processBlock(audio);
     if(!connected){
         audio.clear();
         return;
-    }
-    int l = (int)((float)fs*latencyratio)*2;
-    if(!buf || buf->NumChannels() != audio.getNumChannels() || buf->Length() != l){
-        const ScopedWriteLock lock(mutex);
-        buf.reset(new CircBuffer(false, audio.getNumChannels(), l));
     }
     const ScopedReadLock lock(mutex);
     for(int s=0; s<audio.getNumSamples(); ++s){

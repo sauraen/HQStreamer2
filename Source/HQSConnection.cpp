@@ -23,7 +23,10 @@ HQSConnection::HQSConnection(ModuleBackend& p) : InterprocessConnection(false, 0
     
 }
 HQSConnection::~HQSConnection(){
-    
+    if(pingthread != nullptr){
+        pingthread->stopThread(10);
+        pingthread.reset(nullptr);
+    }
 }
     
 void HQSConnection::connectionMade(){

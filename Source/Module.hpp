@@ -56,6 +56,8 @@ public:
     virtual ~ModuleBackend();
     
     virtual ModuleType GetType() const = 0;
+    virtual int ComputeBufLen() const = 0;
+    virtual bool IsSender() const = 0;
     
     inline PluginProcessor &GetProc() { return proc; }
     inline String GetStatus() { return status.GetStatus(); }

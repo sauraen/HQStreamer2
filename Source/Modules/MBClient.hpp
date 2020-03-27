@@ -28,8 +28,9 @@ public:
     MBClient(PluginProcessor &processor);
     virtual ~MBClient() override;
     virtual ModuleType GetType() const override { return ModuleType::Client; }
+    virtual int ComputeBufLen() const override { return (int)((float)fs*latencyratio)*2; }
+    virtual bool IsSender() const override { return false; }
     
-    virtual void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     virtual void processBlock(AudioBuffer<float> &audio) override;
     
     String GetLatency();
