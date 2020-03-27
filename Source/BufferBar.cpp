@@ -42,7 +42,12 @@ void BufferBar::paint (Graphics& g){
     
     float proportionFilled = (float)fill / (float)length;
     float fillend = (float)width * proportionFilled;
-    float okayness = 1.0f - (2.0f * abs(proportionFilled - 0.5f));
+    float okayness;
+    if(parent.IsSender()){
+        okayness = 1.0f - proportionFilled;
+    }else{
+        okayness = 1.0f - (2.0f * abs(proportionFilled - 0.5f));
+    }
     Colour okaynessColor = Colour::fromHSV(0.33f*okayness, 1.0f, 1.0f, 255);
     
     //Draw background

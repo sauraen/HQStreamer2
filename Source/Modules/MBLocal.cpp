@@ -19,7 +19,7 @@
 #include "MBLocal.hpp"
 
 MBLocal::MBLocal(PluginProcessor &processor) : ModuleBackend(processor), connected(false), sender(nullptr) {
-    //
+    audiotype = PACKET_TYPE_AUDIO_DPCM;
 }
 MBLocal::~MBLocal() {
     Disconnect(nullptr);

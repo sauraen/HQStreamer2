@@ -76,8 +76,6 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     MBClient &backend;
-
-    std::unique_ptr<BufferBar> barBuf;
     //[/UserVariables]
 
     //==============================================================================

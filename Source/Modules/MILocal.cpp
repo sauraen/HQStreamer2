@@ -106,12 +106,16 @@ MILocal::MILocal (MBLocal &b)
 
 
     //[UserPreSize]
+
+    barBuf->setTopLeftPosition(8, 96);
+
     //[/UserPreSize]
 
-    setSize (400, 96);
+    setSize (400, 200);
 
 
     //[Constructor] You can add your own custom stuff here..
+    changeListenerCallback(nullptr);
     //[/Constructor]
 }
 
@@ -139,6 +143,15 @@ void MILocal::paint (Graphics& g)
 
     g.fillAll (Colour (0xff323e44));
 
+    {
+        int x = 8, y = 96, width = 384, height = 96;
+        Colour fillColour = Colour (0xff47a52a);
+        //[UserPaintCustomArguments] Customize the painting arguments here..
+        //[/UserPaintCustomArguments]
+        g.setColour (fillColour);
+        g.fillRect (x, y, width, height);
+    }
+
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
 }
@@ -160,6 +173,7 @@ void MILocal::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == cbxFormat.get())
     {
         //[UserComboBoxCode_cbxFormat] -- add your combo box handling code here..
+        backend.audiotype = ModuleBackend::StringToAudioType(cbxFormat->getText());
         //[/UserComboBoxCode_cbxFormat]
     }
 
@@ -175,6 +189,8 @@ void MILocal::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == btnConnect.get())
     {
         //[UserButtonCode_btnConnect] -- add your button handler code here..
+        if(backend.IsConnected()) backend.Disconnect(nullptr);
+        else backend.Connect(txtSession->getText());
         //[/UserButtonCode_btnConnect]
     }
 
@@ -187,7 +203,14 @@ void MILocal::buttonClicked (Button* buttonThatWasClicked)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 
 void MILocal::changeListenerCallback(ChangeBroadcaster *source){
-    //TODO
+    ignoreUnused(source);
+    txtSession->setEnabled(!backend.IsConnected());
+    btnConnect->setButtonText(backend.IsConnected() ? "Stop" : "Start");
+    txtSession->setText(backend.GetSessionName(), dontSendNotification);
+    cbxFormat->setText(ModuleBackend::AudioTypeToString(backend.audiotype));
+    lblStats->setText(String(backend.buf ? backend.buf->NumChannels() : 0) + " channels, "
+        + String(backend.fs) + " Hz, ping "
+        + String(backend.pingtime, 1) + " ms", dontSendNotification);
 }
 
 //[/MiscUserCode]
@@ -206,8 +229,10 @@ BEGIN_JUCER_METADATA
                  parentClasses="public ModuleInterface" constructorParams="MBLocal &amp;b"
                  variableInitialisers="ModuleInterface(b), backend(b)" snapPixels="8"
                  snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="1"
-                 initialWidth="400" initialHeight="96">
-  <BACKGROUND backgroundColour="ff323e44"/>
+                 initialWidth="400" initialHeight="200">
+  <BACKGROUND backgroundColour="ff323e44">
+    <RECT pos="8 96 384 96" fill="solid: ff47a52a" hasStroke="0"/>
+  </BACKGROUND>
   <LABEL name="lblSession" id="97708be0f814da45" memberName="lblSession"
          virtualName="" explicitFocusOrder="0" pos="0 40 128 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Session name/ID:" editableSingleClick="0"

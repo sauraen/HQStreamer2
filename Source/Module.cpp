@@ -61,6 +61,14 @@ String ModuleBackend::AudioTypeToString(int32_t at){
         default: return "Error";
     }
 }
+int32_t ModuleBackend::StringToAudioType(String s){
+    if(s == "(none)") return -1;
+    if(s == "zeros") return PACKET_TYPE_AUDIO_ZEROS;
+    if(s == "float32") return PACKET_TYPE_AUDIO_FLOAT32;
+    if(s == "int16") return PACKET_TYPE_AUDIO_INT16;
+    if(s == "DPCM") return PACKET_TYPE_AUDIO_DPCM;
+    return -2;
+}
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -71,6 +79,10 @@ ModuleInterface::ModuleInterface(ModuleBackend &b) : backend(b) {
     lblStatus.reset(new Label("lblStatus", backend.GetStatus()));
     addAndMakeVisible(lblStatus.get());
     lblStatus->setBounds(0, 0, 800, 40);
+    
+    barBuf.reset(new BufferBar(backend));
+    addAndMakeVisible(barBuf.get());
+    barBuf->setBounds(8, 96, 384, 96);
     
     startTimer(33);
 }

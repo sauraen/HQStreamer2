@@ -144,7 +144,7 @@ void SenderThread::run(){
             }
             //Send
             parent.SendAudioPacket(packet);
-        }while(false);
+        }while(true);
         //Done
         if(threadShouldExit()) return;
         wait(5); //Wait for 5ms and try again

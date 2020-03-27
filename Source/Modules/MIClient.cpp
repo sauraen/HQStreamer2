@@ -143,12 +143,9 @@ MIClient::MIClient (MBClient &b)
 
 
     //[UserPreSize]
-    
-    barBuf.reset(new BufferBar(backend));
-    addAndMakeVisible(barBuf.get());
-    
-    barBuf->setBounds(8, 144, 384, 96);
-    
+
+    barBuf->setTopLeftPosition(8, 144);
+
     //[/UserPreSize]
 
     setSize (400, 248);

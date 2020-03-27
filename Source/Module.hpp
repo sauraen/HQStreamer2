@@ -70,6 +70,7 @@ public:
     virtual void SendAudioPacket(const MemoryBlock &message);
     
     static String AudioTypeToString(int32_t at);
+    static int32_t StringToAudioType(String s);
     
     ReadWriteLock mutex;
     StatusStack status;
@@ -83,6 +84,8 @@ protected:
     ModuleInterface *interface;
 };
 
+class BufferBar;
+
 class ModuleInterface : public Component, ChangeListener, private Timer {
 public:
     ModuleInterface(ModuleBackend &b);
@@ -91,7 +94,11 @@ public:
     virtual void changeListenerCallback(ChangeBroadcaster *source) override;
     virtual void resized() override;
     virtual void timerCallback() override;
+protected:
+    std::unique_ptr<BufferBar> barBuf;
 private:
     ModuleBackend &backend;
     std::unique_ptr<Label> lblStatus;
 };
+
+#include "BufferBar.hpp"
