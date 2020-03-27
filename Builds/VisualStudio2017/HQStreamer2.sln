@@ -1,0 +1,31 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2017
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HQStreamer2 - Standalone Plugin", "HQStreamer2_StandalonePlugin.vcxproj", "{1563E6F5-2721-9940-6927-3E5088327AF3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5E1E0BFF-57CE-29C7-2E0C-AFDC7E3E1575} = {5E1E0BFF-57CE-29C7-2E0C-AFDC7E3E1575}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HQStreamer2 - VST3", "HQStreamer2_VST3.vcxproj", "{5F63F6D9-BA18-F68F-2E5B-04F73A29B57A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5E1E0BFF-57CE-29C7-2E0C-AFDC7E3E1575} = {5E1E0BFF-57CE-29C7-2E0C-AFDC7E3E1575}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HQStreamer2 - Shared Code", "HQStreamer2_SharedCode.vcxproj", "{5E1E0BFF-57CE-29C7-2E0C-AFDC7E3E1575}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F63F6D9-BA18-F68F-2E5B-04F73A29B57A}.Release|x64.ActiveCfg = Release|x64
+		{5F63F6D9-BA18-F68F-2E5B-04F73A29B57A}.Release|x64.Build.0 = Release|x64
+		{1563E6F5-2721-9940-6927-3E5088327AF3}.Release|x64.ActiveCfg = Release|x64
+		{1563E6F5-2721-9940-6927-3E5088327AF3}.Release|x64.Build.0 = Release|x64
+		{5E1E0BFF-57CE-29C7-2E0C-AFDC7E3E1575}.Release|x64.ActiveCfg = Release|x64
+		{5E1E0BFF-57CE-29C7-2E0C-AFDC7E3E1575}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
