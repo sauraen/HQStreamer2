@@ -22,33 +22,7 @@
 #include "PluginProcessor.hpp"
 #include "StatusStack.hpp"
 #include "CircBuffer.hpp"
-
-#define HQS2_PORT 21568
-#define HQS2_STRLEN 512
-
-#define PACKET_TYPE_PING 0
-#define PACKET_TYPE_PINGRESPONSE 1
-#define PACKET_TYPE_AUDIO_ZEROS 10
-#define PACKET_TYPE_AUDIO_FLOAT32 11
-#define PACKET_TYPE_AUDIO_INT16 12
-#define PACKET_TYPE_AUDIO_DPCM 13
-#define PACKET_TYPE_REQJOIN 20
-#define PACKET_TYPE_ACKJOIN 21
-#define PACKET_TYPE_NAKJOIN 22
-
-#define STATUS_DEBUG 0
-#define STATUS_PACKETERR 1
-#define STATUS_BADSIZE 2
-#define STATUS_BADAPARAM 3
-#define STATUS_NOCONNECT 11
-#define STATUS_WRONGCHN 20
-#define STATUS_WRONGFS 21
-#define STATUS_CLIPPING 25
-#define STATUS_EVENT 30
-#define STATUS_MISC 31
-#define STATUS_DISCONNECTED 50
-#define STATUS_CONNECTED 51
-#define STATUS_INIT 99
+#include "ANI.hpp"
 
 class ModuleInterface;
 

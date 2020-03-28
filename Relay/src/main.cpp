@@ -1,9 +1,5 @@
-#include <juce_core/juce_core.h>
-#include <juce_events/juce_events.h>
-
-#include <iostream>
-
-using namespace juce;
+#include "main.hpp"
+#include "relay.hpp"
 
 int main(){
     std::cout << "He" + String(110) + " world!\n";
