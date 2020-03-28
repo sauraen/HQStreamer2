@@ -38,9 +38,11 @@ public:
     virtual void SendAudioPacket(const MemoryBlock &message) override;
     
     void Connect(String session);
-    void Disconnect(HCLocal *conn);
+    void Disconnect();
     bool IsConnected() { return connected; }
     String GetSessionName() { return sessionname; }
+    int GetNumActiveClients();
+    inline int GetTotalNumClients() { return conns.size(); }
 private:
     friend class HCLocal;
     bool connected;
@@ -58,6 +60,7 @@ public:
     
     virtual void connectionLost() override;
     virtual void VdPacketReceived(const MemoryBlock& packet, int32_t type) override;
+    virtual void UpdatePingTime(float ping) override;
     
     inline bool IsValid() const { return valid; }
 private:

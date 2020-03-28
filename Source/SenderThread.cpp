@@ -90,6 +90,7 @@ void SenderThread::run(){
                 packet.setSize(20);
             }else{
                 //Write data
+                bool clipped = false;
                 if(audioType == PACKET_TYPE_AUDIO_FLOAT32){
                     float* fp = (float*)packet.getData();
                     uint32 i = 5; //index of fp
@@ -105,7 +106,7 @@ void SenderThread::run(){
                     for(c=0; c<nchannels; ++c){
                         float *channelData = (float*)localbuffer[c]->getData();
                         for(s=0; s<nsamples; ++s){
-                            s16p[i++] = encodeFloat(channelData[s]);
+                            s16p[i++] = encodeFloat(channelData[s], clipped);
                         }
                     }
                 }else if(audioType == PACKET_TYPE_AUDIO_DPCM){
@@ -115,13 +116,13 @@ void SenderThread::run(){
                     for(c=0; c<nchannels; ++c){
                         float *channelData = (float*)localbuffer[c]->getData();
                         //Write initial value
-                        value = encodeFloat(channelData[0]);
+                        value = encodeFloat(channelData[0], clipped);
                         u8p[i++] = value & 0x00FF;
                         u8p[i++] = (value & 0xFF00) >> 8;
                         lastsentvalue = value;
                         //Write DPCM samples
                         for(s=1; s<nsamples; ++s){
-                            value = encodeFloat(channelData[s]);
+                            value = encodeFloat(channelData[s], clipped);
                             delta = value - lastsentvalue;
                             if(delta >= 0x4000) delta = 0x3FFF;
                             if(delta < -0x4000) delta = -0x4000;
@@ -143,6 +144,9 @@ void SenderThread::run(){
                     jassertfalse;
                     return;
                 }
+                if(clipped){
+                    parent.status.PushStatus(STATUS_CLIPPING, "Clipping detected! This will sound distorted to the clients!", 30);
+                }
             }
             //Send
             parent.SendAudioPacket(packet);
@@ -153,9 +157,9 @@ void SenderThread::run(){
     }
 }
 
-int16 SenderThread::encodeFloat(float f){
+int16 SenderThread::encodeFloat(float f, bool &clipped){
     f *= 32768.0f;
-    if(f > 32767.0f) f = 32767.0f;
-    if(f < -32768.0f) f = -32768.0f;
+    if(f > 32767.0f) { f = 32767.0f; clipped = true; }
+    if(f < -32768.0f) { f = -32768.0f; clipped = true; }
     return (int16)f;
 }

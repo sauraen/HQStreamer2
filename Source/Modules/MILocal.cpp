@@ -189,7 +189,7 @@ void MILocal::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == btnConnect.get())
     {
         //[UserButtonCode_btnConnect] -- add your button handler code here..
-        if(backend.IsConnected()) backend.Disconnect(nullptr);
+        if(backend.IsConnected()) backend.Disconnect();
         else backend.Connect(txtSession->getText());
         //[/UserButtonCode_btnConnect]
     }
@@ -209,8 +209,8 @@ void MILocal::changeListenerCallback(ChangeBroadcaster *source){
     txtSession->setText(backend.GetSessionName(), dontSendNotification);
     cbxFormat->setText(ModuleBackend::AudioTypeToString(backend.audiotype));
     lblStats->setText(String(backend.buf ? backend.buf->NumChannels() : 0) + " channels, "
-        + String(backend.fs) + " Hz, ping "
-        + String(backend.pingtime, 1) + " ms", dontSendNotification);
+        + String(backend.fs) + " Hz, " + String(backend.GetNumActiveClients()) + "/" 
+        + String(backend.GetTotalNumClients()) + " clients", dontSendNotification);
 }
 
 //[/MiscUserCode]

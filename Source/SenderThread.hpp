@@ -27,7 +27,7 @@ public:
     
     virtual void run() override;
     
-    static int16 encodeFloat(float f);
+    static int16 encodeFloat(float f, bool &clipped);
     
 private:
     ModuleBackend& parent;

@@ -84,13 +84,15 @@ void MBClient::Connect(String host, String session){
     }
     status.ClearStatus(STATUS_NOCONNECT);
     status.PushStatus(STATUS_EVENT, "Sent join request...", 30);
+    const ScopedWriteLock lock(mutex);
+    buf->Reset();
 }
 void MBClient::Disconnect(){
+    status.PushStatus(STATUS_DISCONNECTED, "Disconnected", 30);
     connected = false;
     if(conn){
         conn->disconnect();
     }
-    status.PushStatus(STATUS_DEBUG, "[Disconnected in client]", 30);
     proc.sendChangeMessage();
 }
 
@@ -103,12 +105,10 @@ HCClient::~HCClient() {
 }
 
 void HCClient::connectionLost(){
-    parent.status.PushStatus(STATUS_DEBUG, "[Disconnected HCClient]", 30);
     HQSConnection::connectionLost();
-    parent.status.PushStatus(STATUS_DEBUG, "[After super connectionLost()]", 30);
     parent.connected = false;
     parent.GetProc().sendChangeMessage();
-    parent.status.PushStatus(STATUS_DEBUG, "[After parent Disconnect()]", 30);
+    parent.status.PushStatus(STATUS_DISCONNECTED, "Connection lost", 30);
 }
 
 #define CHECK_PACKET_BOUNDS(i) if((i) >= packet.getSize()) { parent.status.PushStatus(STATUS_BADSIZE, "DPCM ran off end of packet!"); return; } ((void)0)
