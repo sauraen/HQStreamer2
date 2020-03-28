@@ -10,3 +10,4 @@ Builds/x64
 Builds/MacOSX/build
 xcuserdata/
 *.plist
+Relay/build/
