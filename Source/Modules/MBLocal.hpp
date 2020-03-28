@@ -47,6 +47,7 @@ private:
     String sessionname;
     
     OwnedArray<HCLocal> conns;
+    ReadWriteLock conns_mutex;
     SenderThread *sender;
 };
 

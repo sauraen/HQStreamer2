@@ -30,7 +30,17 @@ PluginProcessor::PluginProcessor() : AudioProcessor(BusesProperties()
        .withOutput ("Output", AudioChannelSet::stereo(), true)),
        mod(nullptr), p2p_needrun(false)
 {
-    //
+    File settingsdir = File::getSpecialLocation(File::userApplicationDataDirectory)
+        .getChildFile("HQStreamer2");
+    settingsdir.createDirectory();
+    File stdoutfile = settingsdir.getChildFile("HQStreamer2_cout.log");
+    File stderrfile = settingsdir.getChildFile("HQStreamer2_cerr.log");
+    stdoutfile.deleteFile();
+    stderrfile.deleteFile();
+    freopen(stdoutfile.getFullPathName().toRawUTF8(), "w", stdout);
+    freopen(stderrfile.getFullPathName().toRawUTF8(), "w", stderr);
+    std::cout << std::unitbuf << "Test unbuffered output\n";
+    std::cerr << std::unitbuf << "Test unbuffered error\n";
 }
 
 PluginProcessor::~PluginProcessor()

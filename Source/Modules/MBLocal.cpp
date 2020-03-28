@@ -39,6 +39,7 @@ void MBLocal::processBlock(AudioBuffer<float> &audio) {
 }
 
 void MBLocal::Connect(String session){
+    const ScopedWriteLock lock(conns_mutex);
     jassert(!connected);
     sessionname = session;
     beginWaitingForSocket(HQS2_PORT);
@@ -51,24 +52,37 @@ void MBLocal::Connect(String session){
 }
 void MBLocal::Disconnect(HCLocal *conn){
     if(conn){
-        conn->disconnect();
-        conns.removeObject(conn);
+        if(!connected) return;
+        std::cout << "MBLocal::Disconnect individual\n";
         status.PushStatus(STATUS_EVENT, "A client disconnected", 30);
+        conn->disconnect();
+        const ScopedWriteLock lock(conns_mutex);
+        conns.removeObject(conn);
+        std::cout << "MBLocal::Disconnect individual done\n";
     }else if(connected){
-        connected = false;
+        std::cout << "MBLocal::Disconnect general\n";
+        status.PushStatus(STATUS_EVENT, "Disconnected", 30);
         stop();
+        connected = false;
+        std::cout << "MBLocal::Disconnect stopping sender\n";
         sender->stopThread(10);
+        std::cout << "MBLocal::Disconnect deleting sender\n";
         delete sender; sender = nullptr;
+        std::cout << "MBLocal::Disconnect stopping conns\n";
+        const ScopedWriteLock lock(conns_mutex);
         while(conns.size() > 0){
+            std::cout << "MBLocal::Disconnect disconnecting conn\n";
             conns.getLast()->disconnect();
+            std::cout << "MBLocal::Disconnect deleting conn\n";
             conns.removeLast();
         }
-        status.PushStatus(STATUS_EVENT, "Disconnected", 30);
+        std::cout << "MBLocal::Disconnect general done\n";
     }
     proc.sendChangeMessage();
 }
 
 InterprocessConnection *MBLocal::createConnectionObject(){
+    const ScopedWriteLock lock(conns_mutex);
     HCLocal *conn = new HCLocal(*this);
     conns.add(conn);
     status.PushStatus(STATUS_EVENT, "A client has connected!", 30);
@@ -76,6 +90,8 @@ InterprocessConnection *MBLocal::createConnectionObject(){
 }
 
 void MBLocal::SendAudioPacket(const MemoryBlock &message){
+    const ScopedReadLock lock(conns_mutex);
+    if(!connected) return;
     for(int i=0; i<conns.size(); ++i){
         if(conns[i]->IsValid()){
             conns[i]->sendMessage(message);

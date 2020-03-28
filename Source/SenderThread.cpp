@@ -32,7 +32,6 @@ void SenderThread::run(){
     while(!threadShouldExit()){
         do{
             if(parent.buf == nullptr) break;
-            const ScopedReadLock lock(parent.mutex);
             //See if there's enough data in the buffer to send
             if(parent.buf->NumSplsFilled() < samplegap + samplesperpacket) break;
             int nsamples = samplesperpacket;
@@ -42,11 +41,14 @@ void SenderThread::run(){
             for(c=0; c<nchannels; ++c){
                 localbuffer.add(new MemoryBlock(4*nsamples));
             }
-            for(s=0; s<nsamples; ++s){
-                for(c=0; c<nchannels; ++c){
-                    ((float*)(localbuffer[c]->getData()))[s] = parent.buf->Read(c);
+            {
+                const ScopedReadLock lock(parent.mutex);
+                for(s=0; s<nsamples; ++s){
+                    for(c=0; c<nchannels; ++c){
+                        ((float*)(localbuffer[c]->getData()))[s] = parent.buf->Read(c);
+                    }
+                    parent.buf->ReadAdvance();
                 }
-                parent.buf->ReadAdvance();
             }
             //Create packet and write header
             int32 packetlen = 20;
