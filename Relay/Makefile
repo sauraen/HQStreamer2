@@ -1,9 +1,9 @@
 JUCE_MODULES = juce_core juce_events
-SRC = main.cpp
+SRC = main.cpp relay.cpp
 EXECUTABLE = hqs2relay
 
 CC = g++
-CFLAGS = -std=c++14 -c -Wall -DJUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1 -DJUCE_STANDALONE_APPLICATION=0 -I../JuceLibraryCode/modules
+CFLAGS = -std=c++14 -c -Wall -Wno-sign-compare -DJUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1 -DJUCE_STANDALONE_APPLICATION=0 -I../JuceLibraryCode/modules
 LDFLAGS = -lpthread -ldl -lcurl
 
 JUCE_MODULES_OBJECTS = $(JUCE_MODULES:%=build/%.o)

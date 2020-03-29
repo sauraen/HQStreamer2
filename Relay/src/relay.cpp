@@ -3,9 +3,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 HQS2Relay::HQS2Relay() {
-    Random.getSystemRandom().setSeedRandomly();
+    Random::getSystemRandom().setSeedRandomly();
     //Set the passphrase to some random garbage so people don't leave it on the default
-    passphrase = String(Random.getSystemRandom().nextInt64());
+    passphrase = String(Random::getSystemRandom().nextInt64());
     beginWaitingForSocket(HQS2_PORT);
     gc.reset(new ClientGCThread(*this));
     gc->startThread();
@@ -61,7 +61,7 @@ void HQS2Relay::KickSession(String sessionname){
         }
     }
     if(!host){
-        std::cout << "There is no host for session " << sessionname << "!\n";
+        std::cout << "There is no session \"" << sessionname << "\"!\n";
         return;
     }
     host->disconnect();
@@ -107,11 +107,42 @@ void HQS2Relay::RunStats(){
     }
 }
 
+void HQS2Relay::PrintSessionsInfo(){
+    const ScopedReadLock lock(mutex);
+    std::cout << sessions.size() << " sessions:\n";
+    for(int s=0; s<sessions.size(); ++s){
+        std::cout << s << ". " << sessions[s] << " (" << NumClients(sessions[s]) << " clients)\n";
+    }
+}
+
+void HQS2Relay::PrintSessionInfo(String sessionname){
+    const ScopedReadLock lock(mutex);
+    if(!sessions.contains(sessionname)){
+        std::cout << "There is no session \"" << sessionname << "\"\n";
+        return;
+    }
+    std::cout << "Session " << sessionname << ": " << NumClients(sessionname) << " clients\n";
+    HCRelay *host = nullptr;
+    for(int c=0; c<conns.size(); ++c){
+        if(conns[c]->sessionname != sessionname) continue;
+        if(conns[c]->mode == HCRelay::Mode::Host){
+            host = conns[c];
+        }else if(conns[c]->mode == HCRelay::Mode::Client){
+            std::cout << "Client " << c << ": " << conns[c]->getSocket()->getHostName() << "\n";
+        }
+    }
+    if(!host){
+        std::cout << "(No host?!)\n";
+    }else{
+        std::cout << "Host: " << host->getSocket()->getHostName() << "\n";
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 HCRelay::HCRelay(HQS2Relay &p) : InterprocessConnection(false, 0x32535148), parent(p) {
     mode = Mode::Invalid;
-    challenge = Random.getSystemRandom().nextInt64();
+    challenge = Random::getSystemRandom().nextInt64();
     sessionname = "";
 }
 HCRelay::~HCRelay(){
@@ -124,10 +155,10 @@ void HCRelay::connectionMade(){
 void HCRelay::connectionLost(){
     std::cout << "HCRelay::connectionLost()\n";
     if(mode == Mode::Host){
-        const ScopedReadLock lock(mutex);
-        for(int c=0; c<conns.size(); ++c){
-            if(conns[c]->mode == HCRelay::Mode::Client && conns[c]->sessionname == sessionname){
-                conns[c]->disconnect();
+        const ScopedReadLock lock(parent.mutex);
+        for(int c=0; c<parent.conns.size(); ++c){
+            if(parent.conns[c]->mode == HCRelay::Mode::Client && parent.conns[c]->sessionname == sessionname){
+                parent.conns[c]->disconnect();
             }
         }
     }
@@ -159,7 +190,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         s32ptr2[3] = s32ptr[3];
     }else if(type == PACKET_TYPE_REQHOST){
         //Send challenge
-        challenge = Random.getSystemRandom().nextInt64();
+        challenge = Random::getSystemRandom().nextInt64();
         s32ptr2[1] = PACKET_TYPE_CHLHOST;
         s64ptr2[1] = challenge;
     }else if(type == PACKET_TYPE_RESPHOST){
@@ -178,8 +209,9 @@ void HCRelay::messageReceived(const MemoryBlock& message){
             }else{
                 s32ptr2[1] = PACKET_TYPE_ACKHOST;
                 std::cout << "New session started, name " << sessionname << "\n";
-                sessions.add(sessionname);
                 mode = Mode::Host;
+                const ScopedWriteLock lock(parent.mutex);
+                parent.sessions.add(sessionname);
             }
         }else{
             s32ptr2[1] = PACKET_TYPE_NAKHOST;

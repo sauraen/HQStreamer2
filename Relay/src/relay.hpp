@@ -22,6 +22,8 @@ public:
     
     void RunGC();
     void RunStats();
+    void PrintSessionsInfo();
+    void PrintSessionInfo(String sessionname);
 private:
     friend class HCRelay;
     OwnedArray<HCRelay> conns;
@@ -66,5 +68,5 @@ public:
     
     virtual void run() override;
 private:
-    HostStatsThread& parent;
+    HQS2Relay& parent;
 };
