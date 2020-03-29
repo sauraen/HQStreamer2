@@ -158,7 +158,7 @@ void HCRelay::connectionLost(){
     std::cout << "HCRelay::connectionLost()\n";
     if(mode == Mode::Host){
         const ScopedReadLock lock(parent.mutex);
-		sessions.removeString(sessionname);
+		parent.sessions.removeString(sessionname);
         for(int c=0; c<parent.conns.size(); ++c){
             if(parent.conns[c]->mode == HCRelay::Mode::Client && parent.conns[c]->sessionname == sessionname){
                 parent.conns[c]->disconnect();
