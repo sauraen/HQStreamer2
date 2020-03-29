@@ -120,7 +120,7 @@ MISession::MISession (MBSession &b)
     txtSession->setBounds (128, 88, 264, 24);
 
     lblStats.reset (new Label ("lblStats",
-                               TRANS("X channels, YYY kHz")));
+                               TRANS("X channels, YYY kHz, ping ZZZ, H clients")));
     addAndMakeVisible (lblStats.get());
     lblStats->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
     lblStats->setJustificationType (Justification::centredLeft);
@@ -128,7 +128,7 @@ MISession::MISession (MBSession &b)
     lblStats->setColour (TextEditor::textColourId, Colours::black);
     lblStats->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    lblStats->setBounds (0, 112, 160, 24);
+    lblStats->setBounds (0, 112, 232, 24);
 
     cbxFormat.reset (new ComboBox ("cbxFormat"));
     addAndMakeVisible (cbxFormat.get());
@@ -141,23 +141,28 @@ MISession::MISession (MBSession &b)
     cbxFormat->addItem (TRANS("float32"), 3);
     cbxFormat->addListener (this);
 
-    cbxFormat->setBounds (160, 112, 120, 24);
+    cbxFormat->setBounds (232, 112, 80, 24);
 
     btnConnect.reset (new TextButton ("btnConnect"));
     addAndMakeVisible (btnConnect.get());
     btnConnect->setButtonText (TRANS("Connect"));
     btnConnect->addListener (this);
 
-    btnConnect->setBounds (280, 112, 112, 24);
+    btnConnect->setBounds (312, 112, 80, 24);
 
 
     //[UserPreSize]
+
+    barBuf->setTopLeftPosition(8, 96);
+    txtPass->setPasswordCharacter('*');
+
     //[/UserPreSize]
 
-    setSize (400, 144);
+    setSize (400, 248);
 
 
     //[Constructor] You can add your own custom stuff here..
+    changeListenerCallback(nullptr);
     //[/Constructor]
 }
 
@@ -189,6 +194,15 @@ void MISession::paint (Graphics& g)
 
     g.fillAll (Colour (0xff323e44));
 
+    {
+        int x = 8, y = 144, width = 384, height = 96;
+        Colour fillColour = Colour (0xff2aa59c);
+        //[UserPaintCustomArguments] Customize the painting arguments here..
+        //[/UserPaintCustomArguments]
+        g.setColour (fillColour);
+        g.fillRect (x, y, width, height);
+    }
+
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
 }
@@ -210,6 +224,7 @@ void MISession::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == cbxFormat.get())
     {
         //[UserComboBoxCode_cbxFormat] -- add your combo box handling code here..
+        backend.audiotype = ModuleBackend::StringToAudioType(cbxFormat->getText());
         //[/UserComboBoxCode_cbxFormat]
     }
 
@@ -225,6 +240,8 @@ void MISession::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == btnConnect.get())
     {
         //[UserButtonCode_btnConnect] -- add your button handler code here..
+        if(backend.IsConnected()) backend.Disconnect();
+        else backend.Connect(txtServer->getText(), txtPass->getText(), txtSession->getText());
         //[/UserButtonCode_btnConnect]
     }
 
@@ -237,7 +254,18 @@ void MISession::buttonClicked (Button* buttonThatWasClicked)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 
 void MISession::changeListenerCallback(ChangeBroadcaster *source){
-    //TODO
+    ignoreUnused(source);
+    txtServer->setEnabled(!backend.IsConnected());
+    txtPass->setEnabled(!backend.IsConnected());
+    txtSession->setEnabled(!backend.IsConnected());
+    btnConnect->setButtonText(backend.IsConnected() ? "Disconnect" : "Connect");
+    txtServer->setText(backend.GetServerName(), dontSendNotification);
+    txtSession->setText(backend.GetSessionName(), dontSendNotification);
+    cbxFormat->setText(ModuleBackend::AudioTypeToString(backend.audiotype));
+    lblStats->setText(String(backend.buf ? backend.buf->NumChannels() : 0) + " chns, "
+        + String(backend.fs) + " Hz, ping "
+        + String(backend.pingtime, 1) + " ms, "
+        + String(backend.GetNumClients()) + " clients", dontSendNotification);
 }
 
 //[/MiscUserCode]
@@ -256,8 +284,10 @@ BEGIN_JUCER_METADATA
                  parentClasses="public ModuleInterface" constructorParams="MBSession &amp;b"
                  variableInitialisers="ModuleInterface(b), backend(b)" snapPixels="8"
                  snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="1"
-                 initialWidth="400" initialHeight="144">
-  <BACKGROUND backgroundColour="ff323e44"/>
+                 initialWidth="400" initialHeight="248">
+  <BACKGROUND backgroundColour="ff323e44">
+    <RECT pos="8 144 384 96" fill="solid: ff2aa59c" hasStroke="0"/>
+  </BACKGROUND>
   <LABEL name="lblServer" id="18490dd44ac9c420" memberName="lblServer"
          virtualName="" explicitFocusOrder="0" pos="0 40 104 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Server IP/URL:" editableSingleClick="0"
@@ -285,16 +315,17 @@ BEGIN_JUCER_METADATA
               multiline="0" retKeyStartsLine="0" readonly="0" scrollbars="1"
               caret="1" popupmenu="1"/>
   <LABEL name="lblStats" id="2cad943723b05d77" memberName="lblStats" virtualName=""
-         explicitFocusOrder="0" pos="0 112 160 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="X channels, YYY kHz" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
+         explicitFocusOrder="0" pos="0 112 232 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="X channels, YYY kHz, ping ZZZ, H clients"
+         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
+         fontname="Default font" fontsize="15.0" kerning="0.0" bold="0"
+         italic="0" justification="33"/>
   <COMBOBOX name="cbxFormat" id="13b5ed9dadb9b1f0" memberName="cbxFormat"
-            virtualName="" explicitFocusOrder="0" pos="160 112 120 24" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="232 112 80 24" editable="0"
             layout="33" items="DPCM&#10;int16&#10;float32" textWhenNonSelected=""
             textWhenNoItems="(no choices)"/>
   <TEXTBUTTON name="btnConnect" id="16362dc1c9d88ce6" memberName="btnConnect"
-              virtualName="" explicitFocusOrder="0" pos="280 112 112 24" buttonText="Connect"
+              virtualName="" explicitFocusOrder="0" pos="312 112 80 24" buttonText="Connect"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 

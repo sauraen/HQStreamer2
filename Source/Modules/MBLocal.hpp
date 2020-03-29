@@ -50,7 +50,7 @@ private:
     
     OwnedArray<HCLocal> conns;
     ReadWriteLock conns_mutex;
-    SenderThread *sender;
+    std::unique_ptr<SenderThread> sender;
 };
 
 class HCLocal : public HQSConnection {

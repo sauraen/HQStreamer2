@@ -209,7 +209,7 @@ void MILocal::changeListenerCallback(ChangeBroadcaster *source){
     txtSession->setText(backend.GetSessionName(), dontSendNotification);
     cbxFormat->setText(ModuleBackend::AudioTypeToString(backend.audiotype));
     lblStats->setText(String(backend.buf ? backend.buf->NumChannels() : 0) + " channels, "
-        + String(backend.fs) + " Hz, " + String(backend.GetNumActiveClients()) + "/" 
+        + String(backend.fs) + " Hz, " + String(backend.GetNumActiveClients()) + "/"
         + String(backend.GetTotalNumClients()) + " clients", dontSendNotification);
 }
 

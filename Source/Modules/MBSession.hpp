@@ -19,6 +19,10 @@
 #pragma once
 
 #include "Module.hpp"
+#include "HQSConnection.hpp"
+#include "SenderThread.hpp"
+
+class HCSession;
 
 class MBSession : public ModuleBackend {
 public:
@@ -28,6 +32,31 @@ public:
     virtual int ComputeBufLen() const override { return 20000; }
     virtual bool IsSender() const override { return true; }
     
-    virtual void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     virtual void processBlock(AudioBuffer<float> &audio) override;
+    
+    void Connect(String server, String pass, String session);
+    void Disconnect();
+    bool IsConnected() { return connected; }
+    String GetServerName() { return servername; }
+    String GetSessionName() { return sessionname; }
+    int GetNumClients() { return numclients; }
+private:
+    friend class HCSession;
+    bool connected;
+    std::unique_ptr<HCSession> conn;
+    String servername, passphrase, sessionname;
+    std::unique_ptr<SenderThread> sender;
+    int numclients;
+};
+
+class HCSession : public HQSConnection {
+public:
+    HCSession(MBSession &p);
+    virtual ~HCSession() override;
+    
+    virtual void connectionLost() override;
+    
+    virtual void VdPacketReceived(const MemoryBlock& packet, int32_t type) override;
+private:
+    MBSession &parent;
 };

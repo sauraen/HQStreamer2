@@ -18,7 +18,7 @@
 
 #include "MBLocal.hpp"
 
-MBLocal::MBLocal(PluginProcessor &processor) : ModuleBackend(processor), connected(false), sender(nullptr) {
+MBLocal::MBLocal(PluginProcessor &processor) : ModuleBackend(processor), connected(false) {
     audiotype = PACKET_TYPE_AUDIO_DPCM;
 }
 MBLocal::~MBLocal() {
@@ -44,8 +44,8 @@ void MBLocal::Connect(String session){
     sessionname = session;
     beginWaitingForSocket(HQS2_PORT);
     status.PushStatus(STATUS_EVENT, "Waiting for clients...", 30);
-    jassert(sender == nullptr);
-    sender = new SenderThread(*this, 128, 256);
+    jassert(!sender);
+    sender.reset(new SenderThread(*this, 128, 256));
     sender->startThread();
     proc.sendChangeMessage();
 }
@@ -55,7 +55,7 @@ void MBLocal::Disconnect(){
     status.PushStatus(STATUS_EVENT, "Disconnected", 30);
     stop();
     sender->stopThread(10);
-    delete sender; sender = nullptr;
+    sender.reset(nullptr);
     const ScopedWriteLock lock(conns_mutex);
     while(conns.size() > 0){
         conns.getLast()->disconnect();
@@ -122,7 +122,6 @@ void HCLocal::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
             parent.status.PushStatus(STATUS_BADAPARAM, "Client tried to connect to bogus session " + session + "!", 30);
             s32ptr[1] = PACKET_TYPE_NAKJOIN;
             sendMessage(packet2);
-            disconnect();
             return;
         }
         s32ptr[1] = PACKET_TYPE_ACKJOIN;
