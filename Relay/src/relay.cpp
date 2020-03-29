@@ -179,6 +179,8 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         return;
     }
     int32_t type = s32ptr[1];
+    //std::cout << "Packet type " << (int)type << " received\n";
+    bool disconnectAfterReply = false;
     MemoryBlock ret;
     ret.setSize(20);
     ret.fillWith(0);
@@ -209,6 +211,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
             if(parent.sessions.contains(sessionname)){
                 s32ptr2[1] = PACKET_TYPE_NAMECOLLHOST;
                 std::cout << "Name collision! " << sessionname << "\n";
+                disconnectAfterReply = true;
             }else{
                 s32ptr2[1] = PACKET_TYPE_ACKHOST;
                 std::cout << "New session started, name " << sessionname << "\n";
@@ -219,6 +222,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         }else{
             s32ptr2[1] = PACKET_TYPE_NAKHOST;
             std::cout << "Wrong passphrase!\n";
+            disconnectAfterReply = true;
         }
     }else if(type == PACKET_TYPE_REQJOIN){
         if(message.getSize() != 8 + HQS2_STRLEN){
@@ -229,10 +233,11 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         sessionname = String(CharPointer_UTF8((char*)message.getData() + 8), HQS2_STRLEN);
         const ScopedReadLock lock(parent.mutex);
         if(!parent.sessions.contains(sessionname)){
-            s32ptr[1] = PACKET_TYPE_NAKJOIN;
+            s32ptr2[1] = PACKET_TYPE_NAKJOIN;
             std::cout << "Client tried to join nonexistent session " << sessionname << "!\n";
+            disconnectAfterReply = true;
         }else{
-            s32ptr[1] = PACKET_TYPE_ACKJOIN;
+            s32ptr2[1] = PACKET_TYPE_ACKJOIN;
             std::cout << "New client on session " << sessionname << "\n";
             mode = Mode::Client;
         }
@@ -268,6 +273,9 @@ void HCRelay::messageReceived(const MemoryBlock& message){
     }
     if(!sendMessage(ret)){
         std::cout << "Could not send response packet\n";
+    }
+    if(disconnectAfterReply){
+        disconnect();
     }
 }
 
