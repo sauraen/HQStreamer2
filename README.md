@@ -17,8 +17,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ## Compatibility
 
-Windows 7/8/10 x64: VST3
-Mac OS 10.? - 10.14 (Mojave): VST3, AUv2
+Windows 7/8/10 x64: VST3, Standalone
+Mac OS 10.? - 10.14 (Mojave): VST3, Standalone
+
+The standalone plugins run on their own without a DAW.
 
 A VST2 version of HQStreamer2 can technically be built, but due to Steinberg licensing restrictions cannot be distributed.
 
