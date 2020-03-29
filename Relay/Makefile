@@ -3,8 +3,8 @@ SRC = main.cpp relay.cpp
 EXECUTABLE = hqs2relay
 
 CC = g++
-CFLAGS = -g -std=c++14 -c -Wall -Wno-sign-compare -DJUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1 -DJUCE_STANDALONE_APPLICATION=0 -I../JuceLibraryCode/modules
-LDFLAGS = -lpthread -ldl -lcurl
+CFLAGS = -g -std=c++14 -c -Wall -Wno-sign-compare -DJUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1 -DJUCE_STANDALONE_APPLICATION=0 -DJUCE_USE_CURL=0 -I../JuceLibraryCode/modules
+LDFLAGS = -lpthread -ldl
 
 JUCE_MODULES_OBJECTS = $(JUCE_MODULES:%=build/%.o)
 SRC_OBJECTS = $(SRC:%.cpp=build/%.o)
