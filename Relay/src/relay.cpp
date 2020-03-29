@@ -158,6 +158,7 @@ void HCRelay::connectionLost(){
     std::cout << "HCRelay::connectionLost()\n";
     if(mode == Mode::Host){
         const ScopedReadLock lock(parent.mutex);
+		sessions.removeString(sessionname);
         for(int c=0; c<parent.conns.size(); ++c){
             if(parent.conns[c]->mode == HCRelay::Mode::Client && parent.conns[c]->sessionname == sessionname){
                 parent.conns[c]->disconnect();
@@ -208,18 +209,24 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         int64_t hash_actual = ((int64_t*)message.getData())[1];
         if(hash_should == hash_actual){
             sessionname = String(CharPointer_UTF8((char*)message.getData() + 16), HQS2_STRLEN);
-            const ScopedWriteLock lock(parent.mutex);
-            if(parent.sessions.contains(sessionname)){
-                s32ptr2[1] = PACKET_TYPE_NAMECOLLHOST;
-                std::cout << "Name collision! " << sessionname << "\n";
-                mode = Mode::Bad;
-            }else{
-                s32ptr2[1] = PACKET_TYPE_ACKHOST;
-                std::cout << "New session started, name " << sessionname << "\n";
-                mode = Mode::Host;
-                const ScopedWriteLock lock(parent.mutex);
-                parent.sessions.add(sessionname);
-            }
+			if(sessionname.isEmpty()){
+				s32ptr2[1] = PACKET_TYPE_NAKHOST;
+				std::cout << "Host tried to start session with blank name!\n";
+				mode = Mode::Bad;
+			}else{
+				const ScopedWriteLock lock(parent.mutex);
+				if(parent.sessions.contains(sessionname)){
+					s32ptr2[1] = PACKET_TYPE_NAMECOLLHOST;
+					std::cout << "Name collision! " << sessionname << "\n";
+					mode = Mode::Bad;
+				}else{
+					s32ptr2[1] = PACKET_TYPE_ACKHOST;
+					std::cout << "New session started, name " << sessionname << "\n";
+					const ScopedWriteLock lock(parent.mutex);
+					parent.sessions.add(sessionname);
+					mode = Mode::Host;
+				}
+			}
         }else{
             s32ptr2[1] = PACKET_TYPE_NAKHOST;
             std::cout << "Wrong passphrase!\n";

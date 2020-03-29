@@ -41,6 +41,10 @@ void MBSession::processBlock(AudioBuffer<float> &audio) {
 }
 
 void MBSession::Connect(String server, String pass, String session){
+    if(session.isEmpty()){
+        status.PushStatus(STATUS_NOCONNECT, "Session name must not be blank!");
+        return;
+    }
     servername = server;
     passphrase = pass;
     sessionname = session;
