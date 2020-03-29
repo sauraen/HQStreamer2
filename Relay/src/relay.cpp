@@ -80,8 +80,9 @@ int HQS2Relay::NumClients(String sessionname){
 void HQS2Relay::RunGC(){
     const ScopedWriteLock lock(mutex);
     for(int c=0; c<conns.size(); ++c){
-        if(!conns[c]->isConnected()){
-            std::cout << "Removed stale connection " << c << "\n";
+        if(conns[c]->mode == HCRelay::Mode::Bad){
+            std::cout << "Removing stale connection " << conns[c]->getConnectedHostName() << "\n";
+			if(conns[c]->isConnected()) conns[c]->disconnect();
             conns.remove(c);
             --c;
         }
@@ -101,7 +102,8 @@ void HQS2Relay::RunStats(){
             s32ptr2[1] = PACKET_TYPE_HOSTSTATS;
             s32ptr2[2] = (int32_t)nc;
             if(!conns[c]->sendMessage(ret)){
-                
+                std::cout << "Could not send host stats to host " << conns[c]->getConnectedHostName() 
+						<< " of session " << conns[c]->sessionname << "\n";
             }
         }
     }
@@ -128,20 +130,20 @@ void HQS2Relay::PrintSessionInfo(String sessionname){
         if(conns[c]->mode == HCRelay::Mode::Host){
             host = conns[c];
         }else if(conns[c]->mode == HCRelay::Mode::Client){
-            std::cout << "Client " << c << ": " << conns[c]->getSocket()->getHostName() << "\n";
+            std::cout << "Client " << c << ": " << conns[c]->getConnectedHostName() << "\n";
         }
     }
     if(!host){
         std::cout << "(No host?!)\n";
     }else{
-        std::cout << "Host: " << host->getSocket()->getHostName() << "\n";
+        std::cout << "Host: " << host->getConnectedHostName() << "\n";
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 HCRelay::HCRelay(HQS2Relay &p) : InterprocessConnection(false, 0x32535148), parent(p) {
-    mode = Mode::Invalid;
+    mode = Mode::Init;
     challenge = Random::getSystemRandom().nextInt64();
     sessionname = "";
 }
@@ -162,25 +164,24 @@ void HCRelay::connectionLost(){
             }
         }
     }
-    mode = Mode::Invalid;
+    mode = Mode::Bad;
     sessionname = "";
 }
 void HCRelay::messageReceived(const MemoryBlock& message){
     if(message.getSize() < 20 || message.getSize() > 1000000){
         std::cout << "Bad size packet! " << String((int)message.getSize()) << "\n";
-		disconnect();
+		mode = Mode::Bad;
         return;
     }
     int32_t* s32ptr = (int32_t*)message.getData();
     int32_t size = s32ptr[0];
     if(size != (int32_t)message.getSize()){
         std::cout << "Bad size field " + String((int)size) << "\n";
-		disconnect();
+		mode = Mode::Bad;
         return;
     }
     int32_t type = s32ptr[1];
     //std::cout << "Packet type " << (int)type << " received\n";
-    bool disconnectAfterReply = false;
     MemoryBlock ret;
     ret.setSize(20);
     ret.fillWith(0);
@@ -200,7 +201,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
     }else if(type == PACKET_TYPE_RESPHOST){
         if(message.getSize() != 16 + HQS2_STRLEN){
             std::cout << "Bad size RESPHOST! " << String((int)message.getSize()) << "\n";
-			disconnect();
+			mode = Mode::Bad;
             return;
         }
         int64_t hash_should = (parent.passphrase + String(challenge)).hashCode64();
@@ -211,7 +212,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
             if(parent.sessions.contains(sessionname)){
                 s32ptr2[1] = PACKET_TYPE_NAMECOLLHOST;
                 std::cout << "Name collision! " << sessionname << "\n";
-                disconnectAfterReply = true;
+                mode = Mode::Bad;
             }else{
                 s32ptr2[1] = PACKET_TYPE_ACKHOST;
                 std::cout << "New session started, name " << sessionname << "\n";
@@ -222,12 +223,12 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         }else{
             s32ptr2[1] = PACKET_TYPE_NAKHOST;
             std::cout << "Wrong passphrase!\n";
-            disconnectAfterReply = true;
+            mode = Mode::Bad;
         }
     }else if(type == PACKET_TYPE_REQJOIN){
         if(message.getSize() != 8 + HQS2_STRLEN){
             std::cout << "Bad size REQJOIN! " << String((int)message.getSize()) << "\n";
-			disconnect();
+			mode = Mode::Bad;
             return;
         }
         sessionname = String(CharPointer_UTF8((char*)message.getData() + 8), HQS2_STRLEN);
@@ -235,7 +236,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         if(!parent.sessions.contains(sessionname)){
             s32ptr2[1] = PACKET_TYPE_NAKJOIN;
             std::cout << "Client tried to join nonexistent session " << sessionname << "!\n";
-            disconnectAfterReply = true;
+            mode = Mode::Bad;
         }else{
             s32ptr2[1] = PACKET_TYPE_ACKJOIN;
             std::cout << "New client on session " << sessionname << "\n";
@@ -247,13 +248,13 @@ void HCRelay::messageReceived(const MemoryBlock& message){
           || type == PACKET_TYPE_AUDIO_DPCM){
         if(mode != Mode::Host){
             std::cout << "Connection other than a host is sending audio!\n";
-			disconnect();
+			mode = Mode::Bad;
             return;
         }
         int32_t nchannels = s32ptr[2], nsamples = s32ptr[3], fs = s32ptr[4];
         if(nchannels <= 0 || nchannels > 128 || nsamples < 16 || nsamples > 100000 || fs <= 0 || fs >= 1000000){
             std::cout << "Bad audio params in packet!\n";
-			disconnect();
+			mode = Mode::Bad;
             return;
         }
         if(type == PACKET_TYPE_AUDIO_ZEROS && message.getSize() != 20 ||
@@ -261,21 +262,18 @@ void HCRelay::messageReceived(const MemoryBlock& message){
                 type == PACKET_TYPE_AUDIO_INT16 && message.getSize() != 20+2*nsamples*nchannels ||
                 type == PACKET_TYPE_AUDIO_DPCM && message.getSize() > 20+2*nsamples*nchannels){
             std::cout << "Bad audio packet size " << (int)message.getSize() << " for type " << (int)type << "!\n";
-			disconnect();
+			mode = Mode::Bad;
             return;
         }
         parent.SendAudioPacket(message, sessionname);
         return;
     }else{
         std::cout << "Bad packet type " << String((int)type) << " received!\n";
-		disconnect();
+		mode = Mode::Bad;
         return;
     }
     if(!sendMessage(ret)){
         std::cout << "Could not send response packet\n";
-    }
-    if(disconnectAfterReply){
-        disconnect();
     }
 }
 
@@ -284,7 +282,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
 void ClientGCThread::run(){
     while(!threadShouldExit()){
         parent.RunGC();
-        wait(2973);
+        wait(507);
     }
 }
 

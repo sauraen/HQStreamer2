@@ -43,7 +43,7 @@ public:
     virtual void connectionLost() override;
     virtual void messageReceived(const MemoryBlock& message) override;
     
-    enum class Mode { Invalid, Client, Host };
+    enum class Mode { Init, Client, Host, Bad };
     Mode mode;
     String sessionname;
 private:
