@@ -28,6 +28,7 @@ SenderThread::~SenderThread(){
 }
 
 void SenderThread::run(){
+    std::cout << "SenderThread starting\n";
     int c, s;
     while(!threadShouldExit()){
         do{
@@ -155,6 +156,7 @@ void SenderThread::run(){
         if(threadShouldExit()) return;
         wait(5); //Wait for 5ms and try again
     }
+    std::cout << "SenderThread exiting\n";
 }
 
 int16 SenderThread::encodeFloat(float f, bool &clipped){

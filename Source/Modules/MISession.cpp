@@ -153,7 +153,7 @@ MISession::MISession (MBSession &b)
 
     //[UserPreSize]
 
-    barBuf->setTopLeftPosition(8, 96);
+    barBuf->setTopLeftPosition(8, 144);
     txtPass->setPasswordCharacter('*');
 
     //[/UserPreSize]

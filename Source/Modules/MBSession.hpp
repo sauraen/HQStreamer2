@@ -33,6 +33,7 @@ public:
     virtual bool IsSender() const override { return true; }
     
     virtual void processBlock(AudioBuffer<float> &audio) override;
+    virtual void SendAudioPacket(const MemoryBlock &message) override;
     
     void Connect(String server, String pass, String session);
     void Disconnect();

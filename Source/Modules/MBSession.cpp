@@ -20,6 +20,7 @@
 #include "MBSession.hpp"
 
 MBSession::MBSession(PluginProcessor &processor) : ModuleBackend(processor), connected(false) {
+    audiotype = PACKET_TYPE_AUDIO_DPCM;
     numclients = 0;
 }
 MBSession::~MBSession() {
@@ -49,7 +50,7 @@ void MBSession::Connect(String server, String pass, String session){
         return;
     }
     MemoryBlock packet;
-    packet.setSize(8+HQS2_STRLEN);
+    packet.setSize(20);
     packet.fillWith(0);
     int32_t *s32ptr = (int32_t*)packet.getData();
     s32ptr[0] = 20;
@@ -74,6 +75,13 @@ void MBSession::Disconnect(){
         conn->disconnect();
     }
     proc.sendChangeMessage();
+}
+
+void MBSession::SendAudioPacket(const MemoryBlock &message){
+    std::cout << "MBSession::SendAudioPacket\n";
+    if(!connected || !conn || !conn->isConnected()) return;
+    conn->sendMessage(message);
+    std::cout << "Actually send packet\n";
 }
 
 
@@ -110,7 +118,7 @@ void HCSession::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
         s32ptr2[0] = 16+HQS2_STRLEN;
         s32ptr2[1] = PACKET_TYPE_RESPHOST;
         s64ptr2[1] = (parent.passphrase + String(((int64_t*)packet.getData())[1])).hashCode64();
-        parent.sessionname.copyToUTF8((char*)packet.getData() + 16, HQS2_STRLEN);
+        parent.sessionname.copyToUTF8((char*)packet2.getData() + 16, HQS2_STRLEN);
         sendMessage(packet2);
     }else if(type == PACKET_TYPE_ACKHOST){
         parent.connected = true;
