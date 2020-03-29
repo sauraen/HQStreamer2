@@ -127,7 +127,7 @@ void HCClient::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
         parent.connected = true;
         parent.GetProc().sendChangeMessage();
     }else if(type == PACKET_TYPE_NAKJOIN){
-        parent.status.PushStatus(STATUS_EVENT, "Host rejected connection!", 30);
+        parent.status.PushStatus(STATUS_NOCONNECT, "Host rejected connection!", 30);
     }else if(type == PACKET_TYPE_AUDIO_ZEROS 
           || type == PACKET_TYPE_AUDIO_FLOAT32
           || type == PACKET_TYPE_AUDIO_INT16

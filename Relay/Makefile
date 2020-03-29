@@ -14,9 +14,11 @@ SRC_OBJECTS = $(SRC:%.cpp=build/%.o)
 default: $(EXECUTABLE)
 
 $(JUCE_MODULES_OBJECTS):
+	@mkdir -p build
 	$(CC) $(CFLAGS) -o $@ ../JuceLibraryCode/modules/$(*F)/$(*F).cpp
 
 $(SRC_OBJECTS): build/%.o: src/%.cpp
+	@mkdir -p build
 	$(CC) $(CFLAGS) -o $@ $<
 
 $(EXECUTABLE): $(JUCE_MODULES_OBJECTS) $(SRC_OBJECTS)

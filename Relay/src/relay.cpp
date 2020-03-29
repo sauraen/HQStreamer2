@@ -168,12 +168,14 @@ void HCRelay::connectionLost(){
 void HCRelay::messageReceived(const MemoryBlock& message){
     if(message.getSize() < 20 || message.getSize() > 1000000){
         std::cout << "Bad size packet! " << String((int)message.getSize()) << "\n";
+		disconnect();
         return;
     }
     int32_t* s32ptr = (int32_t*)message.getData();
     int32_t size = s32ptr[0];
     if(size != (int32_t)message.getSize()){
         std::cout << "Bad size field " + String((int)size) << "\n";
+		disconnect();
         return;
     }
     int32_t type = s32ptr[1];
@@ -196,6 +198,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
     }else if(type == PACKET_TYPE_RESPHOST){
         if(message.getSize() != 16 + HQS2_STRLEN){
             std::cout << "Bad size RESPHOST! " << String((int)message.getSize()) << "\n";
+			disconnect();
             return;
         }
         int64_t hash_should = (parent.passphrase + String(challenge)).hashCode64();
@@ -220,6 +223,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
     }else if(type == PACKET_TYPE_REQJOIN){
         if(message.getSize() != 8 + HQS2_STRLEN){
             std::cout << "Bad size REQJOIN! " << String((int)message.getSize()) << "\n";
+			disconnect();
             return;
         }
         sessionname = String(CharPointer_UTF8((char*)message.getData() + 8), HQS2_STRLEN);
@@ -238,11 +242,13 @@ void HCRelay::messageReceived(const MemoryBlock& message){
           || type == PACKET_TYPE_AUDIO_DPCM){
         if(mode != Mode::Host){
             std::cout << "Connection other than a host is sending audio!\n";
+			disconnect();
             return;
         }
         int32_t nchannels = s32ptr[2], nsamples = s32ptr[3], fs = s32ptr[4];
         if(nchannels <= 0 || nchannels > 128 || nsamples < 16 || nsamples > 100000 || fs <= 0 || fs >= 1000000){
             std::cout << "Bad audio params in packet!\n";
+			disconnect();
             return;
         }
         if(type == PACKET_TYPE_AUDIO_ZEROS && message.getSize() != 20 ||
@@ -250,12 +256,14 @@ void HCRelay::messageReceived(const MemoryBlock& message){
                 type == PACKET_TYPE_AUDIO_INT16 && message.getSize() != 20+2*nsamples*nchannels ||
                 type == PACKET_TYPE_AUDIO_DPCM && message.getSize() > 20+2*nsamples*nchannels){
             std::cout << "Bad audio packet size " << (int)message.getSize() << " for type " << (int)type << "!\n";
+			disconnect();
             return;
         }
         parent.SendAudioPacket(message, sessionname);
         return;
     }else{
         std::cout << "Bad packet type " << String((int)type) << " received!\n";
+		disconnect();
         return;
     }
     if(!sendMessage(ret)){
