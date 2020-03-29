@@ -23,6 +23,7 @@
         <FILE id="uSzVzq" name="MISession.cpp" compile="1" resource="0" file="Source/Modules/MISession.cpp"/>
         <FILE id="X4AsQN" name="MISession.hpp" compile="0" resource="0" file="Source/Modules/MISession.hpp"/>
       </GROUP>
+      <FILE id="ZHoVnn" name="ANI.hpp" compile="0" resource="0" file="Source/ANI.hpp"/>
       <FILE id="DkR2Lb" name="BufferBar.cpp" compile="1" resource="0" file="Source/BufferBar.cpp"/>
       <FILE id="jrNg3w" name="BufferBar.hpp" compile="0" resource="0" file="Source/BufferBar.hpp"/>
       <FILE id="CxnTaL" name="CircBuffer.cpp" compile="1" resource="0" file="Source/CircBuffer.cpp"/>

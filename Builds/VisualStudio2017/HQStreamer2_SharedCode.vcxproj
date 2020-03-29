@@ -1909,6 +1909,7 @@
     <ClInclude Include="..\..\Source\Modules\MIClient.hpp"/>
     <ClInclude Include="..\..\Source\Modules\MILocal.hpp"/>
     <ClInclude Include="..\..\Source\Modules\MISession.hpp"/>
+    <ClInclude Include="..\..\Source\ANI.hpp"/>
     <ClInclude Include="..\..\Source\BufferBar.hpp"/>
     <ClInclude Include="..\..\Source\CircBuffer.hpp"/>
     <ClInclude Include="..\..\Source\HQSConnection.hpp"/>

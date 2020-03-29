@@ -426,6 +426,13 @@
 			path = "../../JuceLibraryCode/modules/juce_audio_devices";
 			sourceTree = "SOURCE_ROOT";
 		};
+		73E54C89F98878EA319C7916 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = ANI.hpp;
+			path = ../../Source/ANI.hpp;
+			sourceTree = "SOURCE_ROOT";
+		};
 		75C7E4AFE5412A21793E2FED = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -827,6 +834,7 @@
 			isa = PBXGroup;
 			children = (
 				884775A3D28C412D1BF58200,
+				73E54C89F98878EA319C7916,
 				6C8F7A514DE68308DFCBC13E,
 				ECAA86DFC4C96B64702B59BB,
 				F4938E71D92FAD8C8883B4D6,
