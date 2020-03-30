@@ -74,7 +74,7 @@ namespace ConfigFileHelpers {
 		}
 		configfile.deleteFile();
 		configfileout.moveFileTo(configfile);
-		return false;
+		return true;
 	}
 }
 
