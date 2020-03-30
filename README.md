@@ -31,6 +31,5 @@ Due to technical limitations present in MacOS 10.15 (Catalina) designed to enfor
 
 * Volume slider
 * Config file for most recent server connected to
-* Config file for relay with password hash
 * Socket based live config for relay
-* In TUI, check for EOF character in input and quit (or check return code from getline)
+* Documentation

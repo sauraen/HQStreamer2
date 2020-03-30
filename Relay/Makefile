@@ -1,4 +1,4 @@
-JUCE_MODULES = juce_core juce_events
+JUCE_MODULES = juce_core juce_events juce_cryptography
 SRC = main.cpp relay.cpp
 EXECUTABLE = hqs2relay
 

@@ -1,3 +1,21 @@
+/*
+* HQStreamer2 - Stream audio between DAWs across the internet
+* Copyright (C) 2020 Sauraen, <sauraen@gmail.com>
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "main.hpp"
 #include "../../Source/ANI.hpp"
 
@@ -14,6 +32,7 @@ public:
     void SendAudioPacket(const MemoryBlock &message, String session);
     
     void SetPassphrase(String pass);
+	static String StorePassphrase(String pass);
     
     inline int NumSessions() { return sessions.size(); }
     String GetSessionName(int s);
@@ -29,7 +48,7 @@ private:
     OwnedArray<HCRelay> conns;
     StringArray sessions;
     ReadWriteLock mutex;
-    String passphrase;
+    String passphrase_hashed;
     std::unique_ptr<ClientGCThread> gc;
     std::unique_ptr<HostStatsThread> stats;
 };

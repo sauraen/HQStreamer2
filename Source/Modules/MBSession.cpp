@@ -18,6 +18,7 @@
 
 
 #include "MBSession.hpp"
+#include <cstring>
 
 MBSession::MBSession(PluginProcessor &processor) : ModuleBackend(processor), connected(false) {
     audiotype = PACKET_TYPE_AUDIO_DPCM;
@@ -46,7 +47,8 @@ void MBSession::Connect(String server, String pass, String session){
         return;
     }
     servername = server;
-    passphrase = pass;
+    SHA256 sha(pass.toRawUTF8(), pass.getNumBytesAsUTF8());
+    passphrase_hashed = sha.toHexString();
     sessionname = session;
     conn.reset(new HCSession(*this));
     if(!conn->connectToSocket(servername, HQS2_PORT, 1000)){
@@ -115,14 +117,15 @@ void HCSession::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
     }
     if(type == PACKET_TYPE_CHLHOST){
         MemoryBlock packet2;
-        packet2.setSize(16+HQS2_STRLEN);
+        packet2.setSize(40+HQS2_STRLEN);
         packet2.fillWith(0);
         int32_t *s32ptr2 = (int32_t*)packet2.getData();
-        int64_t *s64ptr2 = (int64_t*)packet2.getData();
-        s32ptr2[0] = 16+HQS2_STRLEN;
+        s32ptr2[0] = 40+HQS2_STRLEN;
         s32ptr2[1] = PACKET_TYPE_RESPHOST;
-        s64ptr2[1] = (parent.passphrase + String(((int64_t*)packet.getData())[1])).hashCode64();
-        parent.sessionname.copyToUTF8((char*)packet2.getData() + 16, HQS2_STRLEN);
+        String temp = parent.passphrase_hashed + String(((int64_t*)packet.getData())[1]);
+        SHA256 sha(temp.toRawUTF8(), temp.getNumBytesAsUTF8());
+        memcpy(&s32ptr2[2], sha.getRawData().begin(), 32);
+        parent.sessionname.copyToUTF8((char*)packet2.getData() + 40, HQS2_STRLEN);
         sendMessage(packet2);
     }else if(type == PACKET_TYPE_ACKHOST){
         parent.connected = true;

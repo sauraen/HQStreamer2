@@ -45,7 +45,7 @@ private:
     friend class HCSession;
     bool connected;
     std::unique_ptr<HCSession> conn;
-    String servername, passphrase, sessionname;
+    String servername, passphrase_hashed, sessionname;
     std::unique_ptr<SenderThread> sender;
     int numclients;
 };

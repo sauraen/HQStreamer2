@@ -1,11 +1,90 @@
+/*
+* HQStreamer2 - Stream audio between DAWs across the internet
+* Copyright (C) 2020 Sauraen, <sauraen@gmail.com>
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "relay.hpp"
+#include <cstring>
+
+namespace ConfigFileHelpers {
+	bool ReadProperty(String key, String &value){
+		File configfile = File::getSpecialLocation(File::userApplicationDataDirectory)
+				.getChildFile("HQStreamer2/hqs2relay.cfg");
+		configfile.create();
+		FileInputStream fis(configfile);
+		if(fis.failedToOpen()){
+			std::cout << "Could not open config file " << configfile.getFullPathName() << "!\n";
+			return false;
+		}
+		while(!fis.isExhausted()){
+			String line = fis.readNextLine();
+			String k = fis.upToFirstOccurrenceOf("=", false, false);
+			String v = fis.fromFirstOccurrenceOf("=", false, false);
+			if(k == key){
+				value = v;
+				return true;
+			}
+		}
+		return false;
+	}
+	bool WriteProperty(String key, String value){
+		File configfile = File::getSpecialLocation(File::userApplicationDataDirectory)
+				.getChildFile("HQStreamer2/hqs2relay.cfg");
+		configfile.create();
+		File configfileout = configfile.getSiblingFile("hqs2relay.cfg.temp");
+		{
+			FileInputStream fis(configfile);
+			FileOutputStream fos(configfileout);
+			if(fis.failedToOpen()){
+				std::cout << "Could not open config file " << configfile.getFullPathName() << "!\n";
+				return false;
+			}
+			if(fos.failedToOpen()){
+				std::cout << "Could not open temporary config file!\n";
+				return false;
+			}
+			bool wrotevalue = false;
+			while(!fis.isExhausted()){
+				String line = fis.readNextLine();
+				String k = fis.upToFirstOccurrenceOf("=", false, false);
+				String v = fis.fromFirstOccurrenceOf("=", false, false);
+				if(k == key){
+					fos.writeText(key + "=" + value + "\n", false, false, nullptr);
+					wrotevalue = true;
+				}else{
+					fos.writeText(line + "\n", false, false, nullptr);
+				}
+			}
+			if(!wrotevalue){
+				fos.writeText(key + "=" + value + "\n", false, false, nullptr);
+			}
+		}
+		configfile.deleteFile();
+		configfileout.moveFileTo(configfile);
+		return false;
+	}
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
 HQS2Relay::HQS2Relay() {
     Random::getSystemRandom().setSeedRandomly();
-    //Set the passphrase to some random garbage so people don't leave it on the default
-    passphrase = String(Random::getSystemRandom().nextInt64());
+	if(!ConfigFileHelpers::ReadProperty("passphrase_hashed", passphrase_hashed)){
+		passphrase_hashed = "unset"; //not equal to the hash of any password
+	}
     beginWaitingForSocket(HQS2_PORT);
     gc.reset(new ClientGCThread(*this));
     gc->startThread();
@@ -34,14 +113,24 @@ void HQS2Relay::SendAudioPacket(const MemoryBlock &message, String session) {
 }
 
 void HQS2Relay::SetPassphrase(String pass) {
-    if(pass == ""){
+    String p = StorePassphrase(pass);
+	if(p.isEmpty()) return;
+    passphrase_hashed = p;
+}
+String HQS2Relay::StorePassphrase(String pass) {
+	if(pass == ""){
         std::cout << "Won't set an empty passphrase!\n";
-        return;
+        return "";
     }
     if(pass.length() < 12){
         std::cout << "That's a really short passphrase, but okay!\n";
     }
-    passphrase = pass;
+	SHA256 sha(pass.toRawUTF8(), pass.getNumBytesAsUTF8());
+	String pass_hashed = sha.toHexString();
+	if(!ConfigFileHelpers::WriteProperty("passphrase_hashed", pass_hashed)){
+		std::cout << "Error writing config file!\n";
+	}
+	return pass_hashed;
 }
 
 String HQS2Relay::GetSessionName(int s){
@@ -183,9 +272,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
     }
     int32_t type = s32ptr[1];
     //std::cout << "Packet type " << (int)type << " received\n";
-    MemoryBlock ret;
-    ret.setSize(20);
-    ret.fillWith(0);
+    MemoryBlock ret(20, true);
     int32_t* s32ptr2 = (int32_t*)ret.getData();
     int64_t* s64ptr2 = (int64_t*)ret.getData();
     s32ptr2[0] = 20;
@@ -200,15 +287,15 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         s32ptr2[1] = PACKET_TYPE_CHLHOST;
         s64ptr2[1] = challenge;
     }else if(type == PACKET_TYPE_RESPHOST){
-        if(message.getSize() != 16 + HQS2_STRLEN){
+        if(message.getSize() != 40 + HQS2_STRLEN){
             std::cout << "Bad size RESPHOST! " << String((int)message.getSize()) << "\n";
 			mode = Mode::Bad;
             return;
         }
-        int64_t hash_should = (parent.passphrase + String(challenge)).hashCode64();
-        int64_t hash_actual = ((int64_t*)message.getData())[1];
-        if(hash_should == hash_actual){
-            sessionname = String(CharPointer_UTF8((char*)message.getData() + 16), HQS2_STRLEN);
+		String temp = parent.passphrase_hashed + String(challenge);
+		SHA256 sha(temp.toRawUTF8(), temp.getNumBytesAsUTF8());
+        if(memcmp(sha.getRawData().begin(), (char*)message.getData() + 8, 32) == 0){
+            sessionname = String(CharPointer_UTF8((char*)message.getData() + 40), HQS2_STRLEN);
 			if(sessionname.isEmpty()){
 				s32ptr2[1] = PACKET_TYPE_NAKHOST;
 				std::cout << "Host tried to start session with blank name!\n";
