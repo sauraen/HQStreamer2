@@ -33,3 +33,4 @@ Due to technical limitations present in MacOS 10.15 (Catalina) designed to enfor
 * Config file for most recent server connected to
 * Socket based live config for relay
 * Documentation
+* AU versions
