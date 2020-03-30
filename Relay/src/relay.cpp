@@ -31,8 +31,8 @@ namespace ConfigFileHelpers {
 		}
 		while(!fis.isExhausted()){
 			String line = fis.readNextLine();
-			String k = fis.upToFirstOccurrenceOf("=", false, false);
-			String v = fis.fromFirstOccurrenceOf("=", false, false);
+			String k = line.upToFirstOccurrenceOf("=", false, false);
+			String v = line.fromFirstOccurrenceOf("=", false, false);
 			if(k == key){
 				value = v;
 				return true;
@@ -59,8 +59,8 @@ namespace ConfigFileHelpers {
 			bool wrotevalue = false;
 			while(!fis.isExhausted()){
 				String line = fis.readNextLine();
-				String k = fis.upToFirstOccurrenceOf("=", false, false);
-				String v = fis.fromFirstOccurrenceOf("=", false, false);
+				String k = line.upToFirstOccurrenceOf("=", false, false);
+				String v = line.fromFirstOccurrenceOf("=", false, false);
 				if(k == key){
 					fos.writeText(key + "=" + value + "\n", false, false, nullptr);
 					wrotevalue = true;
