@@ -41,6 +41,6 @@ public:
     int NumSplsFilled();
 private:
     MemoryBlock data;
-    int channels, length, readhead, writehead;
     bool sendermode;
+    int channels, length, readhead, writehead;
 };

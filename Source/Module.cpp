@@ -110,9 +110,10 @@ void ModuleInterface::resized(){
     barBuf->setSize(getWidth() - 16, 96);
 }
 void ModuleInterface::changeListenerCallback(ChangeBroadcaster *source){
-    ((void)0);
+    ignoreUnused(source);
 }
 void ModuleInterface::sliderValueChanged(Slider *sliderThatWasChanged){
+    ignoreUnused(sliderThatWasChanged);
     backend.volume = std::pow(10.0f, ((float)sldVolume->getValue() * 0.05f));
 }
 void ModuleInterface::timerCallback(){
