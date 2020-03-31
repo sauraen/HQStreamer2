@@ -153,12 +153,12 @@ MISession::MISession (MBSession &b)
 
     //[UserPreSize]
 
-    barBuf->setTopLeftPosition(8, 144);
+    SetOtherGUIBottom(136);
     txtPass->setPasswordCharacter('*');
 
     //[/UserPreSize]
 
-    setSize (400, 248);
+    setSize (400, 272);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -193,15 +193,6 @@ void MISession::paint (Graphics& g)
     //[/UserPrePaint]
 
     g.fillAll (Colour (0xff323e44));
-
-    {
-        int x = 8, y = 144, width = 384, height = 96;
-        Colour fillColour = Colour (0xff2aa59c);
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.fillRect (x, y, width, height);
-    }
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -284,10 +275,8 @@ BEGIN_JUCER_METADATA
                  parentClasses="public ModuleInterface" constructorParams="MBSession &amp;b"
                  variableInitialisers="ModuleInterface(b), backend(b)" snapPixels="8"
                  snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="1"
-                 initialWidth="400" initialHeight="248">
-  <BACKGROUND backgroundColour="ff323e44">
-    <RECT pos="8 144 384 96" fill="solid: ff2aa59c" hasStroke="0"/>
-  </BACKGROUND>
+                 initialWidth="400" initialHeight="272">
+  <BACKGROUND backgroundColour="ff323e44"/>
   <LABEL name="lblServer" id="18490dd44ac9c420" memberName="lblServer"
          virtualName="" explicitFocusOrder="0" pos="0 40 104 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Server IP/URL:" editableSingleClick="0"

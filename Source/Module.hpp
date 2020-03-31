@@ -23,6 +23,9 @@
 #include "StatusStack.hpp"
 #include "CircBuffer.hpp"
 #include "ANI.hpp"
+#include "ConfigFileHelper.hpp"
+
+extern ConfigFileHelper cfgfile;
 
 class ModuleInterface;
 
@@ -55,6 +58,7 @@ public:
     int32_t audiotype;
     int32_t fs;
     float pingtime;
+    float volume;
 protected:
     PluginProcessor &proc;
     ModuleInterface *interface;
@@ -62,19 +66,22 @@ protected:
 
 class BufferBar;
 
-class ModuleInterface : public Component, ChangeListener, private Timer {
+class ModuleInterface : public Component, ChangeListener, Slider::Listener, private Timer {
 public:
     ModuleInterface(ModuleBackend &b);
     virtual ~ModuleInterface() override;
     
-    virtual void changeListenerCallback(ChangeBroadcaster *source) override;
     virtual void resized() override;
+    virtual void changeListenerCallback(ChangeBroadcaster *source) override;
+    virtual void sliderValueChanged(Slider *sliderThatWasChanged) override;
     virtual void timerCallback() override;
-protected:
-    std::unique_ptr<BufferBar> barBuf;
+    
+    void SetOtherGUIBottom(int y);
 private:
     ModuleBackend &backend;
     std::unique_ptr<Label> lblStatus;
+    std::unique_ptr<Slider> sldVolume;
+    std::unique_ptr<BufferBar> barBuf;
 };
 
 #include "BufferBar.hpp"

@@ -105,6 +105,10 @@
 			isa = PBXBuildFile;
 			fileRef = F4938E71D92FAD8C8883B4D6;
 		};
+		3EDECF58824E46B2E68A9894 = {
+			isa = PBXBuildFile;
+			fileRef = 16951BF1F4B44885D7110638;
+		};
 		39FB69B0F64A69D12E24E862 = {
 			isa = PBXBuildFile;
 			fileRef = 0D2FACA552F5D88B0A937EE1;
@@ -265,6 +269,13 @@
 			path = ../../Source/PingThread.hpp;
 			sourceTree = "SOURCE_ROOT";
 		};
+		16951BF1F4B44885D7110638 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = ConfigFileHelper.cpp;
+			path = ../../Source/ConfigFileHelper.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
 		18DCC7D52BF14A89873A03CB = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.cpp;
@@ -327,6 +338,13 @@
 			name = QuartzCore.framework;
 			path = System/Library/Frameworks/QuartzCore.framework;
 			sourceTree = SDKROOT;
+		};
+		3B2C07C264B59077D3CE8BA9 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = ConfigFileHelper.hpp;
+			path = ../../Source/ConfigFileHelper.hpp;
+			sourceTree = "SOURCE_ROOT";
 		};
 		3C4F36D851A1FC189D3D6826 = {
 			isa = PBXFileReference;
@@ -839,6 +857,8 @@
 				ECAA86DFC4C96B64702B59BB,
 				F4938E71D92FAD8C8883B4D6,
 				50E04D88546713A0A7778012,
+				16951BF1F4B44885D7110638,
+				3B2C07C264B59077D3CE8BA9,
 				0D2FACA552F5D88B0A937EE1,
 				85A1C23A08F7C5BAF0553F62,
 				88FC587B64D38AE928B3C668,
@@ -1486,6 +1506,7 @@
 				00EC4CBE72DD7B9D4965E5F7,
 				4B944474EC92ECDDC1376402,
 				292D832D02D5E5D8FEF32910,
+				3EDECF58824E46B2E68A9894,
 				39FB69B0F64A69D12E24E862,
 				B299450E5DA37B82A32FF761,
 				79C34BBC79DB514EEB4BF426,

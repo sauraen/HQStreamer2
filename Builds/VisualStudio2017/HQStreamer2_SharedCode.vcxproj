@@ -87,6 +87,7 @@
     <ClCompile Include="..\..\Source\Modules\MISession.cpp"/>
     <ClCompile Include="..\..\Source\BufferBar.cpp"/>
     <ClCompile Include="..\..\Source\CircBuffer.cpp"/>
+    <ClCompile Include="..\..\Source\ConfigFileHelper.cpp"/>
     <ClCompile Include="..\..\Source\HQSConnection.cpp"/>
     <ClCompile Include="..\..\Source\Module.cpp"/>
     <ClCompile Include="..\..\Source\ModuleChooser.cpp"/>
@@ -1912,6 +1913,7 @@
     <ClInclude Include="..\..\Source\ANI.hpp"/>
     <ClInclude Include="..\..\Source\BufferBar.hpp"/>
     <ClInclude Include="..\..\Source\CircBuffer.hpp"/>
+    <ClInclude Include="..\..\Source\ConfigFileHelper.hpp"/>
     <ClInclude Include="..\..\Source\HQSConnection.hpp"/>
     <ClInclude Include="..\..\Source\Module.hpp"/>
     <ClInclude Include="..\..\Source\ModuleChooser.hpp"/>

@@ -28,6 +28,10 @@
       <FILE id="jrNg3w" name="BufferBar.hpp" compile="0" resource="0" file="Source/BufferBar.hpp"/>
       <FILE id="CxnTaL" name="CircBuffer.cpp" compile="1" resource="0" file="Source/CircBuffer.cpp"/>
       <FILE id="kSCeVU" name="CircBuffer.hpp" compile="0" resource="0" file="Source/CircBuffer.hpp"/>
+      <FILE id="MNnuBs" name="ConfigFileHelper.cpp" compile="1" resource="0"
+            file="Source/ConfigFileHelper.cpp"/>
+      <FILE id="Vqn8N9" name="ConfigFileHelper.hpp" compile="0" resource="0"
+            file="Source/ConfigFileHelper.hpp"/>
       <FILE id="Xroh6x" name="HQSConnection.cpp" compile="1" resource="0"
             file="Source/HQSConnection.cpp"/>
       <FILE id="kXpwp9" name="HQSConnection.hpp" compile="0" resource="0"

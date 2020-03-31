@@ -64,6 +64,7 @@ OBJECTS_SHARED_CODE := \
   $(JUCE_OBJDIR)/MISession_b34e2933.o \
   $(JUCE_OBJDIR)/BufferBar_15448b94.o \
   $(JUCE_OBJDIR)/CircBuffer_cd0f4e40.o \
+  $(JUCE_OBJDIR)/ConfigFileHelper_4b9749b5.o \
   $(JUCE_OBJDIR)/HQSConnection_af0fe269.o \
   $(JUCE_OBJDIR)/Module_f57faff5.o \
   $(JUCE_OBJDIR)/ModuleChooser_7bfc9d10.o \
@@ -153,6 +154,11 @@ $(JUCE_OBJDIR)/BufferBar_15448b94.o: ../../Source/BufferBar.cpp
 $(JUCE_OBJDIR)/CircBuffer_cd0f4e40.o: ../../Source/CircBuffer.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling CircBuffer.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_SHARED_CODE) $(JUCE_CFLAGS_SHARED_CODE) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/ConfigFileHelper_4b9749b5.o: ../../Source/ConfigFileHelper.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling ConfigFileHelper.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_SHARED_CODE) $(JUCE_CFLAGS_SHARED_CODE) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/HQSConnection_af0fe269.o: ../../Source/HQSConnection.cpp

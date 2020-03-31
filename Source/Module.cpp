@@ -18,6 +18,8 @@
 
 #include "Module.hpp"
 
+ConfigFileHelper cfgfile("HQStreamer2");
+
 ModuleBackend::ModuleBackend(PluginProcessor &processor)
         : buf(nullptr), proc(processor) {
     interface = nullptr;
@@ -25,6 +27,7 @@ ModuleBackend::ModuleBackend(PluginProcessor &processor)
     fs = 44100;
     pingtime = -1.0f;
     audiotype = -1;
+    volume = 1.0f;
 }
     
 ModuleBackend::~ModuleBackend(){
@@ -80,6 +83,17 @@ ModuleInterface::ModuleInterface(ModuleBackend &b) : backend(b) {
     addAndMakeVisible(lblStatus.get());
     lblStatus->setBounds(0, 0, 800, 40);
     
+    sldVolume.reset(new Slider(Slider::LinearHorizontal, Slider::TextBoxLeft));
+    sldVolume->setRange(-60.0, 12.0, 0.0);
+    sldVolume->setDoubleClickReturnValue(true, 0.0);
+    sldVolume->setValue(std::log10(backend.volume) * 20.0f);
+    sldVolume->setTextBoxStyle(Slider::TextBoxLeft, true, 56, 20);
+    sldVolume->setTextValueSuffix("dB");
+    sldVolume->setNumDecimalPlacesToDisplay(1);
+    addAndMakeVisible(sldVolume.get());
+    sldVolume->addListener(this);
+    sldVolume->setBounds(8, 96, 384, 24);
+    
     barBuf.reset(new BufferBar(backend));
     addAndMakeVisible(barBuf.get());
     barBuf->setBounds(8, 96, 384, 96);
@@ -90,12 +104,22 @@ ModuleInterface::~ModuleInterface() {
     backend.GetProc().removeChangeListener(this);
 }
 
+void ModuleInterface::resized(){
+    lblStatus->setBounds(0, 0, getWidth(), 40);
+    sldVolume->setSize(getWidth() - 16, 24);
+    barBuf->setSize(getWidth() - 16, 96);
+}
 void ModuleInterface::changeListenerCallback(ChangeBroadcaster *source){
     ((void)0);
 }
-void ModuleInterface::resized(){
-    lblStatus->setBounds(0, 0, getWidth(), 40);
+void ModuleInterface::sliderValueChanged(Slider *sliderThatWasChanged){
+    backend.volume = std::pow(10.0f, ((float)sldVolume->getValue() * 0.05f));
 }
 void ModuleInterface::timerCallback(){
     lblStatus->setText(backend.GetStatus(), dontSendNotification);
+}
+
+void ModuleInterface::SetOtherGUIBottom(int y){
+    sldVolume->setTopLeftPosition(8, y);
+    barBuf->setTopLeftPosition(8, 32+y);
 }

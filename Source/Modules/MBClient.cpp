@@ -19,9 +19,11 @@
 #include "MBClient.hpp"
 
 MBClient::MBClient(PluginProcessor &processor) : ModuleBackend(processor), connected(false) {
+    if(!cfgfile.ReadProperty("hostname", hostname)) hostname = "";
     latencyratio = 0.5f;
     rec_channels = 0;
     rec_fs = 0;
+    volume = 0.25f;
 }
 MBClient::~MBClient() {
     Disconnect();
@@ -36,7 +38,7 @@ void MBClient::processBlock(AudioBuffer<float> &audio) {
     const ScopedReadLock lock(mutex);
     for(int s=0; s<audio.getNumSamples(); ++s){
         for(int c=0; c<audio.getNumChannels(); ++c){
-            audio.getWritePointer(c)[s] = buf->Read(c);
+            audio.getWritePointer(c)[s] = volume * buf->Read(c);
         }
         buf->ReadAdvance();
     }
@@ -123,6 +125,7 @@ void HCClient::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
     int c, s;
     int32_t* s32ptr = (int32_t*)packet.getData();
     if(type == PACKET_TYPE_ACKJOIN){
+        cfgfile.WriteProperty("hostname", parent.hostname);
         parent.status.PushStatus(STATUS_EVENT, "Connected to host!", 30);
         parent.connected = true;
         parent.GetProc().sendChangeMessage();

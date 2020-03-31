@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="evCUHv" name="hqs2relay" projectType="consoleapp" jucerVersion="5.4.7">
+  <MAINGROUP id="eIQkQw" name="hqs2relay">
+    <GROUP id="{08723948-F3AF-9F9E-2CC5-F73D07CF7166}" name="Parent">
+      <FILE id="e3v2Wa" name="ANI.hpp" compile="0" resource="0" file="../Source/ANI.hpp"/>
+      <FILE id="V6Ry2C" name="ConfigFileHelper.cpp" compile="1" resource="0"
+            file="../Source/ConfigFileHelper.cpp"/>
+      <FILE id="zXqTSm" name="ConfigFileHelper.hpp" compile="0" resource="0"
+            file="../Source/ConfigFileHelper.hpp"/>
+    </GROUP>
+    <GROUP id="{A2A881A1-6315-DDF6-90C9-0D835484FFB4}" name="Source">
+      <FILE id="pGec3o" name="main.cpp" compile="1" resource="0" file="Source/main.cpp"/>
+      <FILE id="N60ujm" name="relay.cpp" compile="1" resource="0" file="Source/relay.cpp"/>
+      <FILE id="oYAGRO" name="relay.hpp" compile="0" resource="0" file="Source/relay.hpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Release" recommendedWarnings="LLVM" osxArchitecture="64BitIntel"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../JuceLibraryCode/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../JuceLibraryCode/modules"/>
+        <MODULEPATH id="juce_events" path="../JuceLibraryCode/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <VS2017 targetFolder="Builds/VisualStudio2017">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Release" winArchitecture="x64" linkTimeOptimisation="1"
+                       fastMath="1"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../JuceLibraryCode/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../JuceLibraryCode/modules"/>
+        <MODULEPATH id="juce_events" path="../JuceLibraryCode/modules"/>
+      </MODULEPATHS>
+    </VS2017>
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="0" name="Release" linkTimeOptimisation="1" recommendedWarnings="GCC"
+                       linuxArchitecture="-m64"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../JuceLibraryCode/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../JuceLibraryCode/modules"/>
+        <MODULEPATH id="juce_events" path="../JuceLibraryCode/modules"/>
+      </MODULEPATHS>
+    </LINUX_MAKE>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <WINDOWS/>
+  </LIVE_SETTINGS>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_USE_CURL="0"/>
+</JUCERPROJECT>

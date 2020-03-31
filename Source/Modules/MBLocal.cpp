@@ -31,7 +31,7 @@ void MBLocal::processBlock(AudioBuffer<float> &audio) {
         const ScopedReadLock lock(mutex);
         for(int s=0; s<audio.getNumSamples(); ++s){
             for(int c=0; c<audio.getNumChannels(); ++c){
-                buf->Write(c, audio.getReadPointer(c)[s]);
+                buf->Write(c, volume * audio.getReadPointer(c)[s]);
             }
             buf->WriteAdvance();
         }

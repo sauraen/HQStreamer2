@@ -21,6 +21,7 @@
 #include <cstring>
 
 MBSession::MBSession(PluginProcessor &processor) : ModuleBackend(processor), connected(false) {
+    if(!cfgfile.ReadProperty("hostname", servername)) servername = "";
     audiotype = PACKET_TYPE_AUDIO_DPCM;
     numclients = 0;
 }
@@ -34,7 +35,7 @@ void MBSession::processBlock(AudioBuffer<float> &audio) {
         const ScopedReadLock lock(mutex);
         for(int s=0; s<audio.getNumSamples(); ++s){
             for(int c=0; c<audio.getNumChannels(); ++c){
-                buf->Write(c, audio.getReadPointer(c)[s]);
+                buf->Write(c, volume * audio.getReadPointer(c)[s]);
             }
             buf->WriteAdvance();
         }
@@ -129,6 +130,7 @@ void HCSession::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
         sendMessage(packet2);
     }else if(type == PACKET_TYPE_ACKHOST){
         parent.connected = true;
+        cfgfile.WriteProperty("hostname", parent.servername);
         parent.sender.reset(new SenderThread(parent, 128, 256));
         parent.sender->startThread();
         parent.status.PushStatus(STATUS_CONNECTED, "Connected!", 30);
