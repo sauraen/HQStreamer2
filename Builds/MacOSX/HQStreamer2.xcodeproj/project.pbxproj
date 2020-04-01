@@ -13,6 +13,10 @@
 			isa = PBXBuildFile;
 			fileRef = 021FB2F73BF4E82E4F3FDE00;
 		};
+		3CABE907067790776C015676 = {
+			isa = PBXBuildFile;
+			fileRef = 4212BCD0BDF0D3A79548CAE5;
+		};
 		60C0F5AA171E52225E27821B = {
 			isa = PBXBuildFile;
 			fileRef = 0E80BC10743ECFF62C6365C8;
@@ -32,6 +36,10 @@
 		04FB2741C4269B0BB5D1773F = {
 			isa = PBXBuildFile;
 			fileRef = 323A7B34ADD4649E64B39B17;
+		};
+		F8359967B79F5E7F25980B26 = {
+			isa = PBXBuildFile;
+			fileRef = D3B725D48B3A07383359AE30;
 		};
 		4909D40DA95ECBF37074BFC7 = {
 			isa = PBXBuildFile;
@@ -161,6 +169,10 @@
 			isa = PBXBuildFile;
 			fileRef = 83FD79B28A7AB695C7608B8A;
 		};
+		A363A95AF19C25C4C20C3DE3 = {
+			isa = PBXBuildFile;
+			fileRef = 948BD7FC26EB6176F6F0CD2C;
+		};
 		60DEB13EF2D74E000BA4735B = {
 			isa = PBXBuildFile;
 			fileRef = B9CF5D4290BA1646CC93FAA5;
@@ -255,25 +267,11 @@
 			path = ../../Source/HQSConnection.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
-		0E80BC10743ECFF62C6365C8 = {
-			isa = PBXFileReference;
-			explicitFileType = wrapper.application;
-			includeInIndex = 0;
-			path = HQStreamer2.app;
-			sourceTree = "BUILT_PRODUCTS_DIR";
-		};
 		14F6390786ACC6E269BCBA7E = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.c.h;
 			name = PingThread.hpp;
 			path = ../../Source/PingThread.hpp;
-			sourceTree = "SOURCE_ROOT";
-		};
-		16951BF1F4B44885D7110638 = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
-			name = ConfigFileHelper.cpp;
-			path = ../../Source/ConfigFileHelper.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
 		18DCC7D52BF14A89873A03CB = {
@@ -302,6 +300,27 @@
 			lastKnownFileType = file;
 			name = "juce_events";
 			path = "../../JuceLibraryCode/modules/juce_events";
+			sourceTree = "SOURCE_ROOT";
+		};
+		4212BCD0BDF0D3A79548CAE5 = {
+			isa = PBXFileReference;
+			explicitFileType = "wrapper.app-extension";
+			includeInIndex = 0;
+			path = HQStreamer2.appex;
+			sourceTree = "BUILT_PRODUCTS_DIR";
+		};
+		0E80BC10743ECFF62C6365C8 = {
+			isa = PBXFileReference;
+			explicitFileType = wrapper.application;
+			includeInIndex = 0;
+			path = HQStreamer2.app;
+			sourceTree = "BUILT_PRODUCTS_DIR";
+		};
+		16951BF1F4B44885D7110638 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = ConfigFileHelper.cpp;
+			path = ../../Source/ConfigFileHelper.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
 		2E5EC4CD1295C71B27F452B5 = {
@@ -444,6 +463,13 @@
 			path = "../../JuceLibraryCode/modules/juce_audio_devices";
 			sourceTree = "SOURCE_ROOT";
 		};
+		72F849ED96E9679D4E564096 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "Info-AUv3_AppExtension.plist";
+			path = "Info-AUv3_AppExtension.plist";
+			sourceTree = "SOURCE_ROOT";
+		};
 		73E54C89F98878EA319C7916 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.c.h;
@@ -526,6 +552,13 @@
 			lastKnownFileType = sourcecode.cpp.cpp;
 			name = PluginEditor.cpp;
 			path = ../../Source/PluginEditor.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		948BD7FC26EB6176F6F0CD2C = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_plugin_client_AUv3.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_plugin_client_AUv3.mm";
 			sourceTree = "SOURCE_ROOT";
 		};
 		9A4C2B2A73483D7296A569EE = {
@@ -703,6 +736,13 @@
 			path = ../../Source/Modules/MISession.hpp;
 			sourceTree = "SOURCE_ROOT";
 		};
+		D3B725D48B3A07383359AE30 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = AVFoundation.framework;
+			path = System/Library/Frameworks/AVFoundation.framework;
+			sourceTree = SDKROOT;
+		};
 		D731F5526C49C27CF452483D = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -750,6 +790,13 @@
 			lastKnownFileType = sourcecode.cpp.cpp;
 			name = MISession.cpp;
 			path = ../../Source/Modules/MISession.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		EC277A64ACC857C3C31FD842 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "AUv3_AppExtension.entitlements";
+			path = "AUv3_AppExtension.entitlements";
 			sourceTree = "SOURCE_ROOT";
 		};
 		ECAA86DFC4C96B64702B59BB = {
@@ -916,6 +963,7 @@
 				A8A491087F5A891A307FB499,
 				4E5A9C0B905A0EE638464998,
 				83FD79B28A7AB695C7608B8A,
+				948BD7FC26EB6176F6F0CD2C,
 				B9CF5D4290BA1646CC93FAA5,
 				0BFA16E9869D8F773EB10366,
 				A1862D769E4EB0819BCD8E6C,
@@ -939,6 +987,7 @@
 			children = (
 				E1999604EB22ECCD952928A6,
 				DB303348571171A36206F0EE,
+				72F849ED96E9679D4E564096,
 				0C2F74F6793F4FF6D2C45BD1,
 				51F191A1BCE57A043D4846C1,
 			);
@@ -951,6 +1000,7 @@
 				87CCA5E27A8AE9FFD8396618,
 				F454207575C4E2A0A9E7750F,
 				323A7B34ADD4649E64B39B17,
+				D3B725D48B3A07383359AE30,
 				7EEB16FC6DA97365F906FD74,
 				C98BFCA36B0BA0136C216E5A,
 				AEDE452EA0C5D1C0802A5277,
@@ -969,6 +1019,7 @@
 			children = (
 				AA52DCE743F03AA30FEEE3D0,
 				021FB2F73BF4E82E4F3FDE00,
+				4212BCD0BDF0D3A79548CAE5,
 				0E80BC10743ECFF62C6365C8,
 				DD479F1F71043EB544E915B7,
 			);
@@ -991,7 +1042,7 @@
 		182E0A1B93179C9198FDA7DA = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -1011,7 +1062,7 @@
 				DSTROOT = /;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_FAST_MATH = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"_DEBUG=1",
 					"DEBUG=1",
@@ -1041,7 +1092,7 @@
 				INFOPLIST_PREPROCESS = NO;
 				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/VST3/";
 				LIBRARY_STYLE = Bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CPLUSPLUSFLAGS = "-Wall -Wshadow-all -Wshorten-64-to-32 -Wstrict-aliasing -Wuninitialized -Wunused-parameter -Wconversion -Wsign-compare -Wint-conversion -Wconditional-uninitialized -Woverloaded-virtual -Wreorder -Wconstant-conversion -Wsign-conversion -Wunused-private-field -Wbool-conversion -Wextra-semi -Wunreachable-code -Wzero-as-null-pointer-constant -Wcast-align -Winconsistent-missing-destructor-override -Wshift-sign-overflow -Wnullable-to-nonnull-conversion -Wno-missing-field-initializers -Wno-ignored-qualifiers";
 				OTHER_LDFLAGS = "-bundle -lHQStreamer2";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sauraen.HQStreamer2;
@@ -1066,7 +1117,7 @@
 				DSTROOT = /;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_FAST_MATH = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"_DEBUG=1",
 					"DEBUG=1",
@@ -1096,7 +1147,7 @@
 				INFOPLIST_PREPROCESS = NO;
 				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/Components/";
 				LIBRARY_STYLE = Bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CPLUSPLUSFLAGS = "-Wall -Wshadow-all -Wshorten-64-to-32 -Wstrict-aliasing -Wuninitialized -Wunused-parameter -Wconversion -Wsign-compare -Wint-conversion -Wconditional-uninitialized -Woverloaded-virtual -Wreorder -Wconstant-conversion -Wsign-conversion -Wunused-private-field -Wbool-conversion -Wextra-semi -Wunreachable-code -Wzero-as-null-pointer-constant -Wcast-align -Winconsistent-missing-destructor-override -Wshift-sign-overflow -Wnullable-to-nonnull-conversion -Wno-missing-field-initializers -Wno-ignored-qualifiers";
 				OTHER_LDFLAGS = "-bundle -lHQStreamer2";
 				OTHER_REZFLAGS = "-d ppc_$ppc -d i386_$i386 -d ppc64_$ppc64 -d x86_64_$x86_64 -I /System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Versions/A/Headers -I \"$(DEVELOPER_DIR)/Extras/CoreAudio/AudioUnits/AUPublic/AUBase\" -I \"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioUnit.framework/Headers\"";
@@ -1104,6 +1155,56 @@
 				PRODUCT_NAME = "HQStreamer2";
 				USE_HEADERMAP = NO;
 				WRAPPER_EXTENSION = component;
+			};
+			name = Release;
+		};
+		9E6B1E9E249592C4BF822736 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_ENTITLEMENTS = "AUv3_AppExtension.entitlements";
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_FAST_MATH = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_DEBUG=1",
+					"DEBUG=1",
+					"JUCER_XCODE_MAC_F6D2F4CF=1",
+					"JUCE_APP_VERSION=2.0.0",
+					"JUCE_APP_VERSION_HEX=0x20000",
+					"JucePlugin_Build_VST=0",
+					"JucePlugin_Build_VST3=0",
+					"JucePlugin_Build_AU=0",
+					"JucePlugin_Build_AUv3=1",
+					"JucePlugin_Build_RTAS=0",
+					"JucePlugin_Build_AAX=0",
+					"JucePlugin_Build_Standalone=0",
+					"JucePlugin_Build_Unity=0",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					"../../JuceLibraryCode/modules/juce_audio_processors/format_types/VST3_SDK",
+					"../../JuceLibraryCode",
+					"../../JuceLibraryCode/modules",
+					"../../Source/",
+					"../../JuceLibraryCode/modules/juce_audio_plugin_client",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Info-AUv3_AppExtension.plist;
+				INFOPLIST_PREPROCESS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CPLUSPLUSFLAGS = "-Wall -Wshadow-all -Wshorten-64-to-32 -Wstrict-aliasing -Wuninitialized -Wunused-parameter -Wconversion -Wsign-compare -Wint-conversion -Wconditional-uninitialized -Woverloaded-virtual -Wreorder -Wconstant-conversion -Wsign-conversion -Wunused-private-field -Wbool-conversion -Wextra-semi -Wunreachable-code -Wzero-as-null-pointer-constant -Wcast-align -Winconsistent-missing-destructor-override -Wshift-sign-overflow -Wnullable-to-nonnull-conversion -Wno-missing-field-initializers -Wno-ignored-qualifiers";
+				OTHER_LDFLAGS = "-lHQStreamer2";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sauraen.HQStreamer2.HQStreamer2AUv3;
+				PRODUCT_NAME = "HQStreamer2";
+				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
@@ -1120,7 +1221,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_FAST_MATH = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"_DEBUG=1",
 					"DEBUG=1",
@@ -1147,7 +1248,7 @@
 				);
 				INFOPLIST_FILE = Info-Standalone_Plugin.plist;
 				INFOPLIST_PREPROCESS = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CPLUSPLUSFLAGS = "-Wall -Wshadow-all -Wshorten-64-to-32 -Wstrict-aliasing -Wuninitialized -Wunused-parameter -Wconversion -Wsign-compare -Wint-conversion -Wconditional-uninitialized -Woverloaded-virtual -Wreorder -Wconstant-conversion -Wsign-conversion -Wunused-private-field -Wbool-conversion -Wextra-semi -Wunreachable-code -Wzero-as-null-pointer-constant -Wcast-align -Winconsistent-missing-destructor-override -Wshift-sign-overflow -Wnullable-to-nonnull-conversion -Wno-missing-field-initializers -Wno-ignored-qualifiers";
 				OTHER_LDFLAGS = "-lHQStreamer2";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sauraen.HQStreamer2;
@@ -1169,7 +1270,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_FAST_MATH = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"_DEBUG=1",
 					"DEBUG=1",
@@ -1179,7 +1280,7 @@
 					"JucePlugin_Build_VST=0",
 					"JucePlugin_Build_VST3=1",
 					"JucePlugin_Build_AU=1",
-					"JucePlugin_Build_AUv3=0",
+					"JucePlugin_Build_AUv3=1",
 					"JucePlugin_Build_RTAS=0",
 					"JucePlugin_Build_AAX=0",
 					"JucePlugin_Build_Standalone=1",
@@ -1196,7 +1297,7 @@
 					"$(inherited)",
 				);
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CPLUSPLUSFLAGS = "-Wall -Wshadow-all -Wshorten-64-to-32 -Wstrict-aliasing -Wuninitialized -Wunused-parameter -Wconversion -Wsign-compare -Wint-conversion -Wconditional-uninitialized -Woverloaded-virtual -Wreorder -Wconstant-conversion -Wsign-conversion -Wunused-private-field -Wbool-conversion -Wextra-semi -Wunreachable-code -Wzero-as-null-pointer-constant -Wcast-align -Winconsistent-missing-destructor-override -Wshift-sign-overflow -Wnullable-to-nonnull-conversion -Wno-missing-field-initializers -Wno-ignored-qualifiers";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sauraen.HQStreamer2;
 				PRODUCT_NAME = "HQStreamer2";
@@ -1260,6 +1361,10 @@
 			isa = PBXTargetDependency;
 			target = 137847135F8E48095470D896;
 		};
+		A2602378A1B03EE548A3F71C = {
+			isa = PBXTargetDependency;
+			target = B4B83CE7E2ADEEA55E54E84A;
+		};
 		6AB286709F12F390B0BF01B9 = {
 			isa = PBXTargetDependency;
 			target = CA142D47D4F1F257B374B1D2;
@@ -1292,6 +1397,7 @@
 			dependencies = (
 				9ADBA6E641EF78668CCAC752,
 				1B00752B55745B0939956C38,
+				A2602378A1B03EE548A3F71C,
 				6AB286709F12F390B0BF01B9,
 				504536BF5635490D2CCD9204,
 			);
@@ -1427,6 +1533,67 @@
 			productReference = 021FB2F73BF4E82E4F3FDE00;
 			productType = "com.apple.product-type.bundle";
 		};
+		68B24D1D88B44C1AC6FCF5A0 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9E6B1E9E249592C4BF822736,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		41B4D1DBFC8330B933282670 = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E946EB8BA3E42E1716EFA9B,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EEC79B271B23360B46C6597A = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A363A95AF19C25C4C20C3DE3,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE2B1EFA9194DDA533227E67 = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BB7BAE53CAF9A9E35E74409,
+				4BA0FAFFB51522EE95D5D5DD,
+				04FB2741C4269B0BB5D1773F,
+				F8359967B79F5E7F25980B26,
+				4909D40DA95ECBF37074BFC7,
+				83D895BE815D2E21D3421D80,
+				FFF38675E9EF0C23E0BA67B9,
+				49A2690BE25A12F5E0A67405,
+				C75A9A9E03D4FA3B8D164682,
+				5EC52199A72A44D09AB92736,
+				44C5A0AB137E71002859EE08,
+				879E47989A1EE597B7B27554,
+				17A61C4F86C4FC67E34777C9,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4B83CE7E2ADEEA55E54E84A = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 68B24D1D88B44C1AC6FCF5A0;
+			buildPhases = (
+				41B4D1DBFC8330B933282670,
+				EEC79B271B23360B46C6597A,
+				EE2B1EFA9194DDA533227E67,
+			);
+			buildRules = ( );
+			dependencies = (
+				504536BF5635490D2CCD9204,
+			);
+			name = "HQStreamer2 - AUv3 AppExtension";
+			productName = HQStreamer2;
+			productReference = 4212BCD0BDF0D3A79548CAE5;
+			productType = "com.apple.product-type.app-extension";
+		};
 		C38335D1936169A53740C801 = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1469,6 +1636,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2DFA4D7E38D89072B7864241 = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CABE907067790776C015676,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			name = "Embed App Extensions";
+			dstPath = "";
+			dstSubfolderSpec = 13;
+		};
 		CA142D47D4F1F257B374B1D2 = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C38335D1936169A53740C801;
@@ -1476,9 +1654,11 @@
 				314B018FC1E103C3D5C9FEE5,
 				C72C4C70E4A53404C0AB3BA6,
 				22429069A346196FF014E53B,
+				2DFA4D7E38D89072B7864241,
 			);
 			buildRules = ( );
 			dependencies = (
+				A2602378A1B03EE548A3F71C,
 				504536BF5635490D2CCD9204,
 			);
 			name = "HQStreamer2 - Standalone Plugin";
@@ -1547,13 +1727,13 @@
 		9183BF14B00E6F71A337FAA2 = {
 			isa = PBXProject;
 			buildConfigurationList = 844F874DA29C4BE179FFDF38;
-			attributes = { LastUpgradeCheck = 1100; ORGANIZATIONNAME = "Sauraen"; TargetAttributes = { A91477EDC13A8223B3C9EB7B = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 0; }; com.apple.HardenedRuntime = { enabled = 0; }; }; };9A5D1120E75B3E95B77FE2EA = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 0; }; com.apple.HardenedRuntime = { enabled = 0; }; }; };137847135F8E48095470D896 = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 0; }; com.apple.HardenedRuntime = { enabled = 0; }; }; };CA142D47D4F1F257B374B1D2 = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 0; }; com.apple.HardenedRuntime = { enabled = 0; }; }; };F7539FECAF978530C312DCAE = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 0; }; com.apple.HardenedRuntime = { enabled = 0; }; }; }; }; };
+			attributes = { LastUpgradeCheck = 1100; ORGANIZATIONNAME = "Sauraen"; TargetAttributes = { A91477EDC13A8223B3C9EB7B = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 0; }; com.apple.HardenedRuntime = { enabled = 0; }; }; };9A5D1120E75B3E95B77FE2EA = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 0; }; com.apple.HardenedRuntime = { enabled = 0; }; }; };137847135F8E48095470D896 = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 0; }; com.apple.HardenedRuntime = { enabled = 0; }; }; };B4B83CE7E2ADEEA55E54E84A = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 1; }; com.apple.HardenedRuntime = { enabled = 0; }; }; };CA142D47D4F1F257B374B1D2 = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 0; }; com.apple.HardenedRuntime = { enabled = 0; }; }; };F7539FECAF978530C312DCAE = { SystemCapabilities = {com.apple.ApplicationGroups.iOS = { enabled = 0; }; com.apple.InAppPurchase = { enabled = 0; }; com.apple.InterAppAudio = { enabled = 0; }; com.apple.Push = { enabled = 0; }; com.apple.Sandbox = { enabled = 0; }; com.apple.HardenedRuntime = { enabled = 0; }; }; }; }; };
 			compatibilityVersion = "Xcode 3.2";
 			hasScannedForEncodings = 0;
 			mainGroup = 3613B72AD13717971B083E0B;
 			projectDirPath = "";
 			projectRoot = "";
-			targets = (A91477EDC13A8223B3C9EB7B, 9A5D1120E75B3E95B77FE2EA, 137847135F8E48095470D896, CA142D47D4F1F257B374B1D2, F7539FECAF978530C312DCAE);
+			targets = (A91477EDC13A8223B3C9EB7B, 9A5D1120E75B3E95B77FE2EA, 137847135F8E48095470D896, B4B83CE7E2ADEEA55E54E84A, CA142D47D4F1F257B374B1D2, F7539FECAF978530C312DCAE);
 			knownRegions = (en, Base);
 		};
 	};

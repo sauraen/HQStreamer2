@@ -65,6 +65,7 @@ void PluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 
 void PluginProcessor::processBlock(AudioBuffer<float>& audio, MidiBuffer& midi)
 {
+    std::cout << "PluginProcessor::processBlock\n";
     ScopedNoDenormals noDenormals;
     ignoreUnused(midi);
     if(mod != nullptr){

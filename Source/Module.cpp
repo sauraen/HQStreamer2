@@ -35,11 +35,13 @@ ModuleBackend::~ModuleBackend(){
 }
 
 void ModuleBackend::prepareToPlay(double sampleRate, int samplesPerBlock) {
+    std::cout << "ModuleBackend::prepareToPlay()\n";
     fs = (int32_t)sampleRate;
     ignoreUnused(samplesPerBlock);
 }
 
 void ModuleBackend::processBlock(AudioBuffer<float> &audio) {
+    std::cout << "ModuleBackend::processBlock()\n";
     int l = ComputeBufLen();
     if(!buf || buf->NumChannels() != audio.getNumChannels() || buf->Length() != l){
         const ScopedWriteLock lock(mutex);
@@ -47,7 +49,7 @@ void ModuleBackend::processBlock(AudioBuffer<float> &audio) {
     }
 }
 void ModuleBackend::releaseResources() {
-    //
+    std::cout << "ModuleBackend::releaseResources()\n";
 }
 
 void ModuleBackend::SendAudioPacket(const MemoryBlock &message){
