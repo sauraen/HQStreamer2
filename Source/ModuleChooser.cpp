@@ -59,7 +59,7 @@ ModuleChooser::ModuleChooser (PluginProcessor &processor)
 
     lblTitle.reset (new Label ("lblTitle",
                                TRANS("HQStreamer2 - Copyright (C) 2020 Sauraen\n"
-                               "Affero GPL 3 licensed, see LICENSE.txt")));
+                               "GNU Affero GPL 3 licensed, see LICENSE.txt")));
     addAndMakeVisible (lblTitle.get());
     lblTitle->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
     lblTitle->setJustificationType (Justification::centredLeft);
@@ -184,7 +184,7 @@ BEGIN_JUCER_METADATA
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="lblTitle" id="400faebb01b0195f" memberName="lblTitle" virtualName=""
          explicitFocusOrder="0" pos="0 0 296 40" edTextCol="ff000000"
-         edBkgCol="0" labelText="HQStreamer2 - Copyright (C) 2020 Sauraen&#10;Affero GPL 3 licensed, see LICENSE.txt"
+         edBkgCol="0" labelText="HQStreamer2 - Copyright (C) 2020 Sauraen&#10;GNU Affero GPL 3 licensed, see LICENSE.txt"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.0" kerning="0.0" bold="0"
          italic="0" justification="33"/>
