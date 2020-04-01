@@ -32,7 +32,7 @@ void SenderThread::run(){
     int c, s;
     while(!threadShouldExit()){
         do{
-            if(parent.buf == nullptr) break;
+            if(!parent.buf) break;
             //See if there's enough data in the buffer to send
             if(parent.buf->NumSplsFilled() < samplegap + samplesperpacket) break;
             int nsamples = samplesperpacket;
@@ -51,6 +51,7 @@ void SenderThread::run(){
                     parent.buf->ReadAdvance();
                 }
             }
+            if(threadShouldExit()) return;
             //Create packet and write header
             int32 packetlen = 20;
             int32 audioType = parent.audiotype;
@@ -149,8 +150,10 @@ void SenderThread::run(){
                     parent.status.PushStatus(STATUS_CLIPPING, "Clipping detected! This will sound distorted to the clients!", 30);
                 }
             }
+            if(threadShouldExit()) return;
             //Send
             parent.SendAudioPacket(packet);
+            if(threadShouldExit()) return;
         }while(true);
         //Done
         if(threadShouldExit()) return;

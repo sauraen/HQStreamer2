@@ -73,57 +73,6 @@ void HQSConnection::messageReceived(const MemoryBlock& message){
     }else{
         VdPacketReceived(message, type);
     }
-    /*
-    if(type == PACKET_TYPE_INIT){
-        statusMsg = "Got INIT";
-        uint32 role = u32ptr[2];
-        uint32 sr = u32ptr[3];
-        if(isserver){
-            if((isreceiver ^ (role == 1)) || sr != samplerate){
-                connectionLost();
-                NativeMessageBox::showMessageBoxAsync(AlertWindow::WarningIcon, "HQStreamer", "Client rejected connection (role " + String(role) + ")!\n"
-                    + "Client wants sample rate of " + String(sr) + " but this DAW is at " + String(samplerate) + "--one of you will have to change your project sample rate.");
-                return;
-            }
-            updategui = true;
-        }else if(isclient){
-            isreceiver = (role == 1);
-            issender = !isreceiver;
-            //Send a response
-            MemoryBlock ret;
-            ret.setSize(16);
-            uint32* u32ptr2 = (uint32*)ret.getData();
-            u32ptr2[0] = 16;
-            u32ptr2[1] = PACKET_TYPE_INIT;
-            u32ptr2[2] = isreceiver ? 0 : 1;
-            u32ptr2[3] = samplerate;
-            if(!sendPacket(ret)){
-                statusMsg = "Could not send INIT";
-            }else{
-                statusMsg = "Sent INIT";
-            }
-            if(sr != samplerate){
-                connectionLost();
-                NativeMessageBox::showMessageBoxAsync(AlertWindow::WarningIcon, "HQStreamer", "Rejecting connection (role " + String(role) + ")!\n"
-                    + "Server wants sample rate of " + String(sr) + " but this DAW is at " + String(samplerate) + "--one of you will have to change your project sample rate.");
-                return;
-            }
-            updategui = true;
-        }else{
-            return;
-        }
-        for(c=0; c<getNumInputChannels(); c++){
-            buffers[c]->resetRun(issender);
-        }
-        if(issender){
-            senderthread = new SenderThread(*this, samplesperblock << 1, samplesperblock + (samplesperblock >> 1));
-            senderthread->startThread();
-        }
-    }else{
-        statusMsg = "Bad type field " + String((int)type);
-        return;
-    }
-    */
 }
 
 void HQSConnection::UpdatePingTime(float ping){

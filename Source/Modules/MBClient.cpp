@@ -87,7 +87,7 @@ void MBClient::Connect(String host, String session){
     status.ClearStatus(STATUS_NOCONNECT);
     status.PushStatus(STATUS_EVENT, "Sent join request...", 30);
     const ScopedWriteLock lock(mutex);
-    buf->Reset();
+    if(buf) buf->Reset();
 }
 void MBClient::Disconnect(){
     status.PushStatus(STATUS_DISCONNECTED, "Disconnected", 30);
@@ -117,10 +117,7 @@ void HCClient::connectionLost(){
 
 void HCClient::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
     const ScopedReadLock lock(parent.mutex);
-    if(!parent.buf){
-        parent.status.PushStatus(STATUS_MISC, "No buffer (internal error)!", 30);
-        return;
-    }
+    if(!parent.buf) return;
     int32_t nchannels = -1, nsamples = -1, fs;
     int c, s;
     int32_t* s32ptr = (int32_t*)packet.getData();

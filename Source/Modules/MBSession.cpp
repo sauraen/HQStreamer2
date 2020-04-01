@@ -69,7 +69,7 @@ void MBSession::Connect(String server, String pass, String session){
     status.ClearStatus(STATUS_NOCONNECT);
     status.PushStatus(STATUS_EVENT, "Sent host request...", 30);
     const ScopedWriteLock lock(mutex);
-    buf->Reset();
+    if(buf) buf->Reset();
 }
 void MBSession::Disconnect(){
     status.PushStatus(STATUS_DISCONNECTED, "Disconnected", 30);

@@ -32,8 +32,8 @@ void BufferBar::paint (Graphics& g){
     if(width <= 0 || height <= 0) return;
     
     g.fillAll(Colours::black);
-    if(!parent.buf) return;
     const ScopedReadLock lock(parent.mutex);
+    if(!parent.buf) return;
     
     int length = parent.buf->Length();
     if(length <= 0) return;
