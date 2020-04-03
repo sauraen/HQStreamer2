@@ -81,6 +81,10 @@
 			isa = PBXBuildFile;
 			fileRef = 51F191A1BCE57A043D4846C1;
 		};
+		85E72001B3C6204BAFEB1766 = {
+			isa = PBXBuildFile;
+			fileRef = 11956C05A31B03A4DEA18C49;
+		};
 		AA13DD56AFF3381AE8803EBE = {
 			isa = PBXBuildFile;
 			fileRef = 3562CAA2FE6609FBA5CD3CB8;
@@ -144,6 +148,10 @@
 		9C0D7C87FD53A2936B61E20E = {
 			isa = PBXBuildFile;
 			fileRef = 6BFDC3FF6BB50172B3211EFE;
+		};
+		E4064DE0BB1E5A805FEC80DB = {
+			isa = PBXBuildFile;
+			fileRef = AA92F769FE8666884D0713A8;
 		};
 		1B30F978549B8CB04CA99465 = {
 			isa = PBXBuildFile;
@@ -267,11 +275,39 @@
 			path = ../../Source/HQSConnection.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
+		4212BCD0BDF0D3A79548CAE5 = {
+			isa = PBXFileReference;
+			explicitFileType = "wrapper.app-extension";
+			includeInIndex = 0;
+			path = HQStreamer2.appex;
+			sourceTree = "BUILT_PRODUCTS_DIR";
+		};
+		0E80BC10743ECFF62C6365C8 = {
+			isa = PBXFileReference;
+			explicitFileType = wrapper.application;
+			includeInIndex = 0;
+			path = HQStreamer2.app;
+			sourceTree = "BUILT_PRODUCTS_DIR";
+		};
+		11956C05A31B03A4DEA18C49 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file.icns;
+			name = Icon.icns;
+			path = Icon.icns;
+			sourceTree = "SOURCE_ROOT";
+		};
 		14F6390786ACC6E269BCBA7E = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.c.h;
 			name = PingThread.hpp;
 			path = ../../Source/PingThread.hpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		16951BF1F4B44885D7110638 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = ConfigFileHelper.cpp;
+			path = ../../Source/ConfigFileHelper.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
 		18DCC7D52BF14A89873A03CB = {
@@ -300,27 +336,6 @@
 			lastKnownFileType = file;
 			name = "juce_events";
 			path = "../../JuceLibraryCode/modules/juce_events";
-			sourceTree = "SOURCE_ROOT";
-		};
-		4212BCD0BDF0D3A79548CAE5 = {
-			isa = PBXFileReference;
-			explicitFileType = "wrapper.app-extension";
-			includeInIndex = 0;
-			path = HQStreamer2.appex;
-			sourceTree = "BUILT_PRODUCTS_DIR";
-		};
-		0E80BC10743ECFF62C6365C8 = {
-			isa = PBXFileReference;
-			explicitFileType = wrapper.application;
-			includeInIndex = 0;
-			path = HQStreamer2.app;
-			sourceTree = "BUILT_PRODUCTS_DIR";
-		};
-		16951BF1F4B44885D7110638 = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
-			name = ConfigFileHelper.cpp;
-			path = ../../Source/ConfigFileHelper.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
 		2E5EC4CD1295C71B27F452B5 = {
@@ -414,6 +429,13 @@
 			path = ../../Source/Modules/MBSession.hpp;
 			sourceTree = "SOURCE_ROOT";
 		};
+		5D87649DEDE16C5FA18D4CCD = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			name = "hqs2_icon_16.png";
+			path = "../../Data/hqs2_icon_16.png";
+			sourceTree = "SOURCE_ROOT";
+		};
 		60241A35867E118AF10693C1 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
@@ -491,6 +513,13 @@
 			path = ../../Source/SenderThread.hpp;
 			sourceTree = "SOURCE_ROOT";
 		};
+		7D2429B587CCDC6FBC56F315 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			name = "hqs2_icon_256.png";
+			path = "../../Data/hqs2_icon_256.png";
+			sourceTree = "SOURCE_ROOT";
+		};
 		7E8223B8A11A17C570130040 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -505,12 +534,26 @@
 			path = System/Library/Frameworks/Carbon.framework;
 			sourceTree = SDKROOT;
 		};
+		7F6EBD59F4C127590EE2611E = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			name = "hqs2_icon_64.png";
+			path = "../../Data/hqs2_icon_64.png";
+			sourceTree = "SOURCE_ROOT";
+		};
 		80B63138AACE22D0249F4819 = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = CoreAudioKit.framework;
 			path = System/Library/Frameworks/CoreAudioKit.framework;
 			sourceTree = SDKROOT;
+		};
+		8208E88DA68737BA1EA2E3B4 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			name = "hqs2_icon_32.png";
+			path = "../../Data/hqs2_icon_32.png";
+			sourceTree = "SOURCE_ROOT";
 		};
 		83DA8DDDE0BE1783FF77D422 = {
 			isa = PBXFileReference;
@@ -568,6 +611,13 @@
 			path = "../../JuceLibraryCode/include_juce_audio_formats.mm";
 			sourceTree = "SOURCE_ROOT";
 		};
+		9C01CD2DC3F097813AAC706E = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = BinaryData.h;
+			path = ../../JuceLibraryCode/BinaryData.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		A01EEEDE501A1FF7382AC80F = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
@@ -608,6 +658,13 @@
 			lastKnownFileType = file.r;
 			name = "include_juce_audio_plugin_client_AU.r";
 			path = "../../JuceLibraryCode/include_juce_audio_plugin_client_AU.r";
+			sourceTree = "SOURCE_ROOT";
+		};
+		AA92F769FE8666884D0713A8 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = BinaryData.cpp;
+			path = ../../JuceLibraryCode/BinaryData.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
 		AAD6781E3898B26E61BBC9C2 = {
@@ -721,6 +778,13 @@
 			name = Cocoa.framework;
 			path = System/Library/Frameworks/Cocoa.framework;
 			sourceTree = SDKROOT;
+		};
+		CB9ED349F1CF6440D8A0D1F9 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file.svg;
+			name = "hqs2_icon.svg";
+			path = "../../Data/hqs2_icon.svg";
+			sourceTree = "SOURCE_ROOT";
 		};
 		CD021DC334BD224CF828ECFC = {
 			isa = PBXFileReference;
@@ -876,6 +940,18 @@
 			path = "../../JuceLibraryCode/modules/juce_gui_extra";
 			sourceTree = "SOURCE_ROOT";
 		};
+		F9E3A62B92DEF8557F928028 = {
+			isa = PBXGroup;
+			children = (
+				CB9ED349F1CF6440D8A0D1F9,
+				5D87649DEDE16C5FA18D4CCD,
+				8208E88DA68737BA1EA2E3B4,
+				7F6EBD59F4C127590EE2611E,
+				7D2429B587CCDC6FBC56F315,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
 		884775A3D28C412D1BF58200 = {
 			isa = PBXGroup;
 			children = (
@@ -928,6 +1004,7 @@
 		8659EC16C786763A4DBE40B2 = {
 			isa = PBXGroup;
 			children = (
+				F9E3A62B92DEF8557F928028,
 				DE1EB71A0D640CCCC87FF954,
 			);
 			name = HQStreamer2;
@@ -957,6 +1034,8 @@
 			isa = PBXGroup;
 			children = (
 				83DA8DDDE0BE1783FF77D422,
+				AA92F769FE8666884D0713A8,
+				9C01CD2DC3F097813AAC706E,
 				F7520C456EA62AF0623A954D,
 				B17BE5AF9CA13C7CEAFAE9C8,
 				9A4C2B2A73483D7296A569EE,
@@ -990,6 +1069,7 @@
 				72F849ED96E9679D4E564096,
 				0C2F74F6793F4FF6D2C45BD1,
 				51F191A1BCE57A043D4846C1,
+				11956C05A31B03A4DEA18C49,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1417,6 +1497,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E946EB8BA3E42E1716EFA9B,
+				85E72001B3C6204BAFEB1766,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1476,6 +1557,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E946EB8BA3E42E1716EFA9B,
+				85E72001B3C6204BAFEB1766,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1546,6 +1628,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E946EB8BA3E42E1716EFA9B,
+				85E72001B3C6204BAFEB1766,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1607,6 +1690,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E946EB8BA3E42E1716EFA9B,
+				85E72001B3C6204BAFEB1766,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1694,6 +1778,7 @@
 				32DAC35A3402530329AD4DE3,
 				6F785F43110710069AA0EB02,
 				9C0D7C87FD53A2936B61E20E,
+				E4064DE0BB1E5A805FEC80DB,
 				1B30F978549B8CB04CA99465,
 				BD14479B6FC875207017D808,
 				8B2B317ED2C85C15C5636E50,

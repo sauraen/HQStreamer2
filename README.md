@@ -148,5 +148,5 @@ If there's no error message (the status says "OK"):
 ## TODOs
 
 * Socket based live config for relay
-* Documentation
-* AU versions
+* Test AUv3 version
+* Store server IP, passphrase, and session name in DAW project
