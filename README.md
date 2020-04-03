@@ -22,9 +22,9 @@ HQStreamer2 is a cross-platform, cross-format plugin and server backend for stre
 
 ## Compatibility
 
-*Windows 7/8/10 x64: VST3, Standalone, Relay
-*Mac OS 10.7 (Lion) - 10.14 (Mojave): VST3, AU, AUv3, Standalone, Relay
-*Linux: Standalone, Relay
+* Windows 7/8/10 x64: VST3, Standalone, Relay
+* Mac OS 10.7 (Lion) - 10.14 (Mojave): VST3, AU, AUv3, Standalone, Relay
+* Linux: Standalone, Relay
 
 The standalone plugins run on their own without a DAW, and can be connected to any system audio I/O devices. "Relay" is the component of HQStreamer2 which runs on a server and routes audio from hosts to many clients each.
 
