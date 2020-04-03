@@ -37,7 +37,7 @@ Due to technical limitations present in MacOS 10.15 (Catalina) designed to enfor
 
 Downloads are in the `Downloads` folder above. 
 
-On Mac, packages such as apps and plugins (like `HQStreamer2.vst3`) are actually folders, so you can't directly download the entire folder from GitHub. The easiest workaround is to simply download the entire repo from the green `Clone or download` button above, and choose `Download ZIP`. Inside the ZIP file (Downloads/macos_x64), your Mac OS Finder will treat the packages as individual files.
+On Mac, HQStreamer2.dmg is a standard "installer", containing all versions of the software. You may install whichever versions (VST3, Standalone, AU, AUv3) just by dragging the packages to the target folders following the arrows.
 
 If you are a developer, please clone (or fork) the repo. Pull requests are welcome!
 
