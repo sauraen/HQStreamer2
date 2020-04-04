@@ -58,6 +58,7 @@ If your DAW does not automatically detect HQStreamer2 on startup, tell it to res
 Move or copy HQStreamer2.component into your system or user AU components folder. Some DAWs do not support the user AU components folder, so use the system one if possible.
 * System (for all users): `/Library/Audio/Plug-Ins/Components`
 * User: `/Users/your_name/Library/Audio/Plug-Ins/Components` (Note that the folder `/Users/your_name/Library` DOES already exist, it's hidden by default.)
+
 If your DAW does not automatically detect HQStreamer2 on startup, tell it to rescan for new/modified plugins. It has been reported that some AU plugins are not detected until the computer is restarted, though we have not found this to be the case for HQStreamer2.
 
 Note that HQStreamer2 is by nature not "sandbox safe" (it opens network connections). Apple requires AU plugins to be "sandbox safe" to be loaded in newer versions of GarageBand.
