@@ -50,6 +50,7 @@ Move or copy HQStreamer2.vst3 into your system (or user) 64-bit VST3 folder. Cre
 * Windows: `C:\Program Files\Common Files\VST3`
 * Mac OS system VST3 folder (for all users): `/Library/Audio/Plug-Ins/VST3`
 * Mac OS user VST3 folder: `/Users/your_name/Library/Audio/Plug-Ins/VST3` (Note that the folder `/Users/your_name/Library` DOES already exist, it's hidden by default.)
+
 If your DAW does not automatically detect HQStreamer2 on startup, tell it to rescan for new/modified plugins. If your DAW still does not detect the plugin on Windows, and you're sure your DAW supports VST3 plugins (Pro Tools and older DAWs will not), try installing [the Visual C++ Redistributable 2017 from Microsoft](https://aka.ms/vs/16/release/vc_redist.x64.exe).
 
 ### AU (Mac OS only)
