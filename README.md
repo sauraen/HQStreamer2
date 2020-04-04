@@ -98,7 +98,7 @@ The controls which are common to all modules are:
 
 #### Audio Parameters
 
-The sample rate and number of channels are determined by the sender. HQStreamer2 supports arbitrary sample rates and between 1 and 128 channels. Note that clients will refuse to output audio received in a format which is not compatible with their DAW's current state. Most commonly, this means clients will have to change their DAW's sample rate to match the sender's, but this is true for multichannel streams as well.
+The sample rate and number of channels are determined by the sender. HQStreamer2 supports arbitrary sample rates and between 1 and 128 channels. Note that clients will refuse to output audio received in a format which is not compatible with their DAW's current state. Most commonly, this means clients will have to change their DAW's sample rate to match the sender's, and this is true for multichannel streams as well.
 
 The sender choose the audio format, from the following three choices:
 * float32: Standard 32-bit floating point, as used in most audio applications. This format is the only one that does not clip incoming audio: incoming data greater than 0 dB (+/- 1.0f) will be transmitted and received without distortion.
