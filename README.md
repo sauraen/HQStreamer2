@@ -30,7 +30,7 @@ The standalone plugins run on their own without a DAW, and can be connected to a
 
 A VST2 version of HQStreamer2 can technically be built, but due to Steinberg licensing restrictions cannot be distributed.
 
-Due to technical limitations present in MacOS 10.15 (Catalina) designed to enforce Apple licensing policy, experimental third-party apps like HQStreamer2 *will never be* compatible with MacOS 10.15 (Catalina) or later.
+Due to technical limitations present in MacOS 10.15 (Catalina) designed to enforce Apple licensing policy, experimental third-party apps like HQStreamer2 *are not officially* compatible with MacOS 10.15 (Catalina) or later.
 
 
 ## Download
