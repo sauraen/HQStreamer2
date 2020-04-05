@@ -23,26 +23,30 @@ HQStreamer2 is a cross-platform, cross-format plugin and server backend for stre
 ## Compatibility
 
 * Windows 7/8/10 x64: VST3, Standalone, Relay
-* Mac OS 10.7 (Lion) - 10.14 (Mojave): VST3, AU, AUv3, Standalone, Relay
+* Mac OS 10.7 (Lion) - 10.14 (Mojave), and unofficially 10.15 (Catalina): VST3, AU, AUv3, Standalone, Relay
 * Linux: Standalone, Relay
 
 The standalone plugins run on their own without a DAW, and can be connected to any system audio I/O devices. "Relay" is the component of HQStreamer2 which runs on a server and routes audio from hosts to many clients each.
 
 A VST2 version of HQStreamer2 can technically be built, but due to Steinberg licensing restrictions cannot be distributed.
 
-Due to technical limitations present in MacOS 10.15 (Catalina) designed to enforce Apple licensing policy, experimental third-party apps like HQStreamer2 *are not officially* compatible with MacOS 10.15 (Catalina) or later.
+Regarding Mac OS 10.15 (Catalina): As an experimental open-source program, HQStreamer2 is neither code-signed nor notarized by Apple. Apple does not officially support such software on Catalina, and may completely ban all such software on future versions of Mac OS. However, there is a workaround to permit individual programs to run on Catalina despite these restrictions.
+* For standalone or relay: Right-click or Ctrl-click on the app and choose Open. In the security dialog box that pops up, choose Open.
+* For the plugins: After you attempt to load the plugin into your DAW and receive the security warning, close your DAW. Go to the Apple menu  > System Preferences > Security & Privacy > General. There will be a notice about HQStreamer2 being unidentified. Click the Open Anyway button, then reopen your DAW and if necessary rescan for plugins.
 
 
 ## Download
 
 Downloads are in the `Downloads` folder above. 
 
-On Mac, HQStreamer2.dmg is a standard "installer", containing all versions of the software. You may install whichever versions (VST3, Standalone, AU, AUv3) just by dragging the packages to the target folders following the arrows.
+On Mac, HQStreamer2.dmg is a standard "installer", containing all versions of the software. After opening the .dmg file on your computer, double-click on InstallForSystem or InstallForUser to install HQStreamer2 for all users or just yourself. Either of these options installs the standalone app and all plugin versions. Please note that InstallForSystem will be compatible with more hosts, but requires admin privileges.
 
 If you are a developer, please clone (or fork) the repo. Pull requests are welcome!
 
 
-## Installation
+## Manual Installation
+
+On Mac, it's easier to use the InstallForSystem or InstallForUser scripts within HQStreamer2.dmg, instead of manually following the steps below.
 
 ### VST3
 
