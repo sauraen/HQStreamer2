@@ -30,7 +30,7 @@ The standalone plugins run on their own without a DAW, and can be connected to a
 
 A VST2 version of HQStreamer2 can technically be built, but due to Steinberg licensing restrictions cannot be distributed.
 
-Due to technical limitations present in MacOS 10.15 (Catalina) designed to enforce Apple licensing policy, experimental third-party apps like HQStreamer2 *will never be* compatible with MacOS 10.15 (Catalina) or later.
+Due to technical limitations present in MacOS 10.15 (Catalina) designed to enforce Apple licensing policy, experimental third-party apps like HQStreamer2 *are not officially* compatible with MacOS 10.15 (Catalina) or later.
 
 
 ## Download
@@ -50,6 +50,7 @@ Move or copy HQStreamer2.vst3 into your system (or user) 64-bit VST3 folder. Cre
 * Windows: `C:\Program Files\Common Files\VST3`
 * Mac OS system VST3 folder (for all users): `/Library/Audio/Plug-Ins/VST3`
 * Mac OS user VST3 folder: `/Users/your_name/Library/Audio/Plug-Ins/VST3` (Note that the folder `/Users/your_name/Library` DOES already exist, it's hidden by default.)
+
 If your DAW does not automatically detect HQStreamer2 on startup, tell it to rescan for new/modified plugins. If your DAW still does not detect the plugin on Windows, and you're sure your DAW supports VST3 plugins (Pro Tools and older DAWs will not), try installing [the Visual C++ Redistributable 2017 from Microsoft](https://aka.ms/vs/16/release/vc_redist.x64.exe).
 
 ### AU (Mac OS only)
@@ -57,6 +58,7 @@ If your DAW does not automatically detect HQStreamer2 on startup, tell it to res
 Move or copy HQStreamer2.component into your system or user AU components folder. Some DAWs do not support the user AU components folder, so use the system one if possible.
 * System (for all users): `/Library/Audio/Plug-Ins/Components`
 * User: `/Users/your_name/Library/Audio/Plug-Ins/Components` (Note that the folder `/Users/your_name/Library` DOES already exist, it's hidden by default.)
+
 If your DAW does not automatically detect HQStreamer2 on startup, tell it to rescan for new/modified plugins. It has been reported that some AU plugins are not detected until the computer is restarted, though we have not found this to be the case for HQStreamer2.
 
 Note that HQStreamer2 is by nature not "sandbox safe" (it opens network connections). Apple requires AU plugins to be "sandbox safe" to be loaded in newer versions of GarageBand.
@@ -96,7 +98,7 @@ The controls which are common to all modules are:
 
 #### Audio Parameters
 
-The sample rate and number of channels are determined by the sender. HQStreamer2 supports arbitrary sample rates and between 1 and 128 channels. Note that clients will refuse to output audio received in a format which is not compatible with their DAW's current state. Most commonly, this means clients will have to change their DAW's sample rate to match the sender's, but this is true for multichannel streams as well.
+The sample rate and number of channels are determined by the sender. HQStreamer2 supports arbitrary sample rates and between 1 and 128 channels. Note that clients will refuse to output audio received in a format which is not compatible with their DAW's current state. Most commonly, this means clients will have to change their DAW's sample rate to match the sender's, and this is true for multichannel streams as well.
 
 The sender choose the audio format, from the following three choices:
 * float32: Standard 32-bit floating point, as used in most audio applications. This format is the only one that does not clip incoming audio: incoming data greater than 0 dB (+/- 1.0f) will be transmitted and received without distortion.
