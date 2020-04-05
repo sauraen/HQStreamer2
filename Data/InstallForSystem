@@ -5,25 +5,22 @@ if [ $(uname -s) != "Darwin" ]; then
 	exit 1
 fi
 
-echo $0
-
 p=`dirname "$0"`
 cd "$p"
-pwd
 
 INSTPREFIX=/.
 SUDO="sudo "
+echo "\n\nPlease type your password to install HQStreamer2 system-wide:\n"
 
 $SUDO mkdir -p $INSTPREFIX/Applications
 $SUDO mkdir -p $INSTPREFIX/Library/Audio/Plug-Ins/VST3/
 $SUDO mkdir -p $INSTPREFIX/Library/Audio/Plug-Ins/Components/
 
+echo "Copying files..."
 $SUDO cp -pR HQStreamer2.app       $INSTPREFIX/Applications/
 $SUDO cp -pR HQStreamer2.vst3      $INSTPREFIX/Library/Audio/Plug-Ins/VST3/
 $SUDO cp -pR HQStreamer2.component $INSTPREFIX/Library/Audio/Plug-Ins/Components/
 $SUDO cp -pR HQStreamer2.appex     $INSTPREFIX/Library/Audio/Plug-Ins/Components/
 
-echo "HQStreamer2 has been installed system-wide."
-echo ""
-echo "Press Enter to finish"
-read foo
+echo "\n\nHQStreamer2 has been installed system-wide.\n"
+echo "You may close this window now.\n\n"
