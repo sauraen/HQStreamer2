@@ -28,8 +28,8 @@
     </XCODE_MAC>
     <VS2017 targetFolder="Builds/VisualStudio2017">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Release" winArchitecture="x64" linkTimeOptimisation="1"
-                       fastMath="1"/>
+        <CONFIGURATION isDebug="0" name="Release" winArchitecture="x64" linkTimeOptimisation="1"
+                       fastMath="1" optimisation="2" useRuntimeLibDLL="0" alwaysGenerateDebugSymbols="0"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JuceLibraryCode/modules"/>
