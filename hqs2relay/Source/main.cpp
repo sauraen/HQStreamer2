@@ -84,8 +84,6 @@ int main(int argc, char* argv[]){
     signal(SIGILL,  CrashHandler);
     signal(SIGFPE,  CrashHandler);
 	
-	*(int*)nullptr = 42; //crash
-	
 	//Parse command line options
 	bool interactive = false;
 	for(int i=1; i<argc; ++i){
