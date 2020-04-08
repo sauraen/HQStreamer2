@@ -10,3 +10,5 @@
 **/Builds/MacOSX/build
 xcuserdata/
 *.plist
+*.log
+
