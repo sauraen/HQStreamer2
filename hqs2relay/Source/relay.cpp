@@ -18,9 +18,16 @@
 
 #include "relay.hpp"
 #include <cstring>
+#include <time.h>
 #include "../../Source/ConfigFileHelper.hpp"
 
 ConfigFileHelper cfgfile("hqs2relay");
+
+static const char *TimeStr() {
+    time_t rawtime = time(nullptr);
+    struct tm *timeinfo = localtime(&rawtime);
+    return asctime(timeinfo);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -34,14 +41,14 @@ HQS2Relay::HQS2Relay() {
     gc->startThread();
     stats.reset(new HostStatsThread(*this));
     stats->startThread();
-    std::cout << "HQS2Relay running\n";
+    std::cout << TimeStr() << " HQS2Relay running\n";
 }
 HQS2Relay::~HQS2Relay() {
     //
 }
 
 InterprocessConnection *HQS2Relay::createConnectionObject() {
-    std::cout << "New connection opened\n";
+    std::cout << TimeStr() << " New connection opened\n";
     const ScopedWriteLock lock(mutex);
     HCRelay *conn = new HCRelay(*this);
     conns.add(conn);
@@ -114,7 +121,7 @@ void HQS2Relay::RunGC(){
     const ScopedWriteLock lock(mutex);
     for(int c=0; c<conns.size(); ++c){
         if(conns[c]->mode == HCRelay::Mode::Bad){
-            std::cout << "Removing stale connection " << conns[c]->getConnectedHostName() << "\n";
+            std::cout << TimeStr() << " Removing stale connection " << conns[c]->getConnectedHostName() << "\n";
 			if(conns[c]->isConnected()) conns[c]->disconnect();
             conns.remove(c);
             --c;
@@ -135,7 +142,7 @@ void HQS2Relay::RunStats(){
             s32ptr2[1] = PACKET_TYPE_HOSTSTATS;
             s32ptr2[2] = (int32_t)nc;
             if(!conns[c]->sendMessage(ret)){
-                std::cout << "Could not send host stats to host " << conns[c]->getConnectedHostName() 
+                std::cout << TimeStr() << " Could not send host stats to host " << conns[c]->getConnectedHostName() 
 						<< " of session " << conns[c]->sessionname << "\n";
             }
         }
@@ -185,10 +192,10 @@ HCRelay::~HCRelay(){
 }
 
 void HCRelay::connectionMade(){
-    std::cout << "HCRelay::connectionMade()\n";
+    std::cout << TimeStr() << " HCRelay::connectionMade()\n";
 }
 void HCRelay::connectionLost(){
-    std::cout << "HCRelay::connectionLost()\n";
+    std::cout << TimeStr() << " HCRelay::connectionLost()\n";
     if(mode == Mode::Host){
         const ScopedReadLock lock(parent.mutex);
 		parent.sessions.removeString(sessionname);
@@ -201,16 +208,19 @@ void HCRelay::connectionLost(){
     mode = Mode::Bad;
     sessionname = "";
 }
+
+#define TIME_AND_IP TimeStr() << " / " << getConnectedHostName() << ": "
+
 void HCRelay::messageReceived(const MemoryBlock& message){
     if(message.getSize() < 20 || message.getSize() > 1000000){
-        std::cout << "Bad size packet! " << String((int)message.getSize()) << "\n";
+        std::cout << TIME_AND_IP << "Bad size packet! " << String((int)message.getSize()) << "\n";
 		mode = Mode::Bad;
         return;
     }
     int32_t* s32ptr = (int32_t*)message.getData();
     int32_t size = s32ptr[0];
     if(size != (int32_t)message.getSize()){
-        std::cout << "Bad size field " + String((int)size) << "\n";
+        std::cout << TIME_AND_IP << "Bad size field " + String((int)size) << "\n";
 		mode = Mode::Bad;
         return;
     }
@@ -232,7 +242,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         s64ptr2[1] = challenge;
     }else if(type == PACKET_TYPE_RESPHOST){
         if(message.getSize() != 40 + HQS2_STRLEN){
-            std::cout << "Bad size RESPHOST! " << String((int)message.getSize()) << "\n";
+            std::cout << TIME_AND_IP << "Bad size RESPHOST! " << String((int)message.getSize()) << "\n";
 			mode = Mode::Bad;
             return;
         }
@@ -242,29 +252,29 @@ void HCRelay::messageReceived(const MemoryBlock& message){
             sessionname = String(CharPointer_UTF8((char*)message.getData() + 40), HQS2_STRLEN);
 			if(sessionname.isEmpty()){
 				s32ptr2[1] = PACKET_TYPE_NAKHOST;
-				std::cout << "Host tried to start session with blank name!\n";
+				std::cout << TIME_AND_IP << "Host tried to start session with blank name!\n";
 				mode = Mode::Bad;
 			}else{
 				const ScopedWriteLock lock(parent.mutex);
 				if(parent.sessions.contains(sessionname)){
 					s32ptr2[1] = PACKET_TYPE_NAMECOLLHOST;
-					std::cout << "Name collision! " << sessionname << "\n";
+					std::cout << TIME_AND_IP << "Name collision! " << sessionname << "\n";
 					mode = Mode::Bad;
 				}else{
 					s32ptr2[1] = PACKET_TYPE_ACKHOST;
-					std::cout << "New session started, name " << sessionname << "\n";
+					std::cout << TIME_AND_IP << "New session started, name " << sessionname << "\n";
 					parent.sessions.add(sessionname);
 					mode = Mode::Host;
 				}
 			}
         }else{
             s32ptr2[1] = PACKET_TYPE_NAKHOST;
-            std::cout << "Wrong passphrase!\n";
+            std::cout << TIME_AND_IP << "Wrong passphrase!\n";
             mode = Mode::Bad;
         }
     }else if(type == PACKET_TYPE_REQJOIN){
         if(message.getSize() != 8 + HQS2_STRLEN){
-            std::cout << "Bad size REQJOIN! " << String((int)message.getSize()) << "\n";
+            std::cout << TIME_AND_IP << "Bad size REQJOIN! " << String((int)message.getSize()) << "\n";
 			mode = Mode::Bad;
             return;
         }
@@ -272,11 +282,11 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         const ScopedReadLock lock(parent.mutex);
         if(!parent.sessions.contains(sessionname)){
             s32ptr2[1] = PACKET_TYPE_NAKJOIN;
-            std::cout << "Client tried to join nonexistent session " << sessionname << "!\n";
+            std::cout << TIME_AND_IP << "Client tried to join nonexistent session " << sessionname << "!\n";
             mode = Mode::Bad;
         }else{
             s32ptr2[1] = PACKET_TYPE_ACKJOIN;
-            std::cout << "New client on session " << sessionname << "\n";
+            std::cout << TIME_AND_IP << "New client on session " << sessionname << "\n";
             mode = Mode::Client;
         }
     }else if(type == PACKET_TYPE_AUDIO_ZEROS 
@@ -284,33 +294,33 @@ void HCRelay::messageReceived(const MemoryBlock& message){
           || type == PACKET_TYPE_AUDIO_INT16
           || type == PACKET_TYPE_AUDIO_DPCM){
         if(mode != Mode::Host){
-            std::cout << "Connection other than a host is sending audio!\n";
+            std::cout << TIME_AND_IP << "Connection other than a host is sending audio!\n";
 			mode = Mode::Bad;
             return;
         }
         int32_t nchannels = s32ptr[2], nsamples = s32ptr[3], fs = s32ptr[4];
         if(nchannels <= 0 || nchannels > 128 || nsamples < 16 || nsamples > 100000 || fs <= 0 || fs >= 1000000){
-            std::cout << "Bad audio params in packet!\n";
+            std::cout << TIME_AND_IP << "Bad audio params in packet!\n";
 			mode = Mode::Bad;
             return;
         }
-        if(type == PACKET_TYPE_AUDIO_ZEROS && message.getSize() != 20 ||
-                type == PACKET_TYPE_AUDIO_FLOAT32 && message.getSize() != 20+4*nsamples*nchannels ||
-                type == PACKET_TYPE_AUDIO_INT16 && message.getSize() != 20+2*nsamples*nchannels ||
-                type == PACKET_TYPE_AUDIO_DPCM && message.getSize() > 20+2*nsamples*nchannels){
-            std::cout << "Bad audio packet size " << (int)message.getSize() << " for type " << (int)type << "!\n";
+        if((type == PACKET_TYPE_AUDIO_ZEROS && message.getSize() != 20) ||
+                (type == PACKET_TYPE_AUDIO_FLOAT32 && message.getSize() != 20+4*nsamples*nchannels) ||
+                (type == PACKET_TYPE_AUDIO_INT16 && message.getSize() != 20+2*nsamples*nchannels) ||
+                (type == PACKET_TYPE_AUDIO_DPCM && message.getSize() > 20+2*nsamples*nchannels)){
+            std::cout << TIME_AND_IP << "Bad audio packet size " << (int)message.getSize() << " for type " << (int)type << "!\n";
 			mode = Mode::Bad;
             return;
         }
         parent.SendAudioPacket(message, sessionname);
         return;
     }else{
-        std::cout << "Bad packet type " << String((int)type) << " received!\n";
+        std::cout << TIME_AND_IP << "Bad packet type " << String((int)type) << " received!\n";
 		mode = Mode::Bad;
         return;
     }
     if(!sendMessage(ret)){
-        std::cout << "Could not send response packet\n";
+        std::cout << TIME_AND_IP << "Could not send response packet\n";
     }
 }
 

@@ -131,12 +131,14 @@ MIClient::MIClient (MBClient &b)
     cbxLatency->setJustificationType (Justification::centredLeft);
     cbxLatency->setTextWhenNothingSelected (String());
     cbxLatency->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    cbxLatency->addItem (TRANS("50ms"), 1);
-    cbxLatency->addItem (TRANS("100ms"), 2);
-    cbxLatency->addItem (TRANS("200ms"), 3);
-    cbxLatency->addItem (TRANS("500ms"), 4);
-    cbxLatency->addItem (TRANS("1s"), 5);
-    cbxLatency->addItem (TRANS("2s"), 6);
+    cbxLatency->addItem (TRANS("10ms"), 1);
+    cbxLatency->addItem (TRANS("25ms"), 2);
+    cbxLatency->addItem (TRANS("50ms"), 3);
+    cbxLatency->addItem (TRANS("100ms"), 4);
+    cbxLatency->addItem (TRANS("200ms"), 5);
+    cbxLatency->addItem (TRANS("500ms"), 6);
+    cbxLatency->addItem (TRANS("1s"), 7);
+    cbxLatency->addItem (TRANS("2s"), 8);
     cbxLatency->addListener (this);
 
     cbxLatency->setBounds (208, 112, 88, 24);
@@ -298,7 +300,7 @@ BEGIN_JUCER_METADATA
          fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
   <COMBOBOX name="cbxLatency" id="45f50e6c66e2bab" memberName="cbxLatency"
             virtualName="" explicitFocusOrder="0" pos="208 112 88 24" editable="0"
-            layout="33" items="50ms&#10;100ms&#10;200ms&#10;500ms&#10;1s&#10;2s"
+            layout="33" items="10ms&#10;25ms&#10;50ms&#10;100ms&#10;200ms&#10;500ms&#10;1s&#10;2s"
             textWhenNonSelected="" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 

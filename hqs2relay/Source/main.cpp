@@ -22,7 +22,65 @@
 #include <iostream>
 #include <string>
 
+#ifdef JUCE_LINUX
+#include <execinfo.h>
+#include <fcntl.h>
+#include <unistd.h>
+#endif
+
+static int crashfd = 0;
+
+static void WriteRaw(const char *t){
+	unsigned len = 0;
+	for(const char *s = t; *s && len < 512; ++len, ++s);
+	write(crashfd, t, len);
+    write(crashfd, "\n", 1);
+}
+
+static void CrashHandler(int sig){
+    const char* name = nullptr;
+    switch(sig) {
+        case SIGABRT: name = "SIGABRT";  break;
+        case SIGSEGV: name = "SIGSEGV";  break;
+        case SIGILL:  name = "SIGILL ";  break;
+        case SIGFPE:  name = "SIGFPE ";  break;
+        default:      name = "UNKNOWN";  break;
+    }
+    write(crashfd, "CRASH: ", 7);
+    write(crashfd, name, 7);
+    write(crashfd, "\n", 1);
+#ifdef JUCE_LINUX
+	//Code from backtrace_symbols man page
+	int j, nptrs;
+	#define STACK_SIZE 100
+	void *buffer[STACK_SIZE];
+	char **strings;
+
+	nptrs = backtrace(buffer, STACK_SIZE);
+	strings = backtrace_symbols(buffer, nptrs);
+	if (strings == NULL) {
+		WriteRaw("Could not BT");
+		exit(sig);
+	}
+	for (j = 0; j < nptrs; j++) WriteRaw(strings[j]);
+	free(strings);
+#endif
+	close(crashfd);
+	//This may not work, but it's already saved to the file
+	std::cout << "CRASH: " << name << "\n";
+    exit(sig);
+}
+
 int main(int argc, char* argv[]){
+	crashfd = open("crash.log", O_WRONLY | O_TRUNC | O_CREAT);
+	if(crashfd < 0){
+		std::cout << "Could not open crash log file!\n";
+	}
+    signal(SIGABRT, CrashHandler);
+    signal(SIGSEGV, CrashHandler);
+    signal(SIGILL,  CrashHandler);
+    signal(SIGFPE,  CrashHandler);
+	
 	//Parse command line options
 	bool interactive = false;
 	for(int i=1; i<argc; ++i){
@@ -95,4 +153,5 @@ int main(int argc, char* argv[]){
 			Thread::sleep(100);
 		}
 	}
+    close(crashfd);
 }

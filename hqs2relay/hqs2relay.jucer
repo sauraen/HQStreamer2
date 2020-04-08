@@ -39,7 +39,7 @@
     </VS2017>
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="0" name="Release" linkTimeOptimisation="1" recommendedWarnings="GCC"
+        <CONFIGURATION isDebug="1" name="Release" linkTimeOptimisation="1" recommendedWarnings="GCC"
                        linuxArchitecture="-m64"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
@@ -56,6 +56,7 @@
   </MODULES>
   <LIVE_SETTINGS>
     <WINDOWS/>
+    <LINUX/>
   </LIVE_SETTINGS>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_USE_CURL="0"/>
 </JUCERPROJECT>
