@@ -59,27 +59,32 @@ static void CrashHandler(int sig){
 	nptrs = backtrace(buffer, STACK_SIZE);
 	strings = backtrace_symbols(buffer, nptrs);
 	if (strings == NULL) {
-		WriteRaw("Could not BT");
+		WriteRaw("Could not get backtrace");
 		exit(sig);
 	}
 	for (j = 0; j < nptrs; j++) WriteRaw(strings[j]);
 	free(strings);
 #endif
 	close(crashfd);
-	//This may not work, but it's already saved to the file
-	std::cout << "CRASH: " << name << "\n";
     exit(sig);
 }
 
 int main(int argc, char* argv[]){
+	std::cout.setf(std::ios::unitbuf);
+	std::cerr.setf(std::ios::unitbuf);
+	
 	crashfd = open("crash.log", O_WRONLY | O_TRUNC | O_CREAT);
 	if(crashfd < 0){
 		std::cout << "Could not open crash log file!\n";
+	}else{
+		WriteRaw("Crash log file");
 	}
     signal(SIGABRT, CrashHandler);
     signal(SIGSEGV, CrashHandler);
     signal(SIGILL,  CrashHandler);
     signal(SIGFPE,  CrashHandler);
+	
+	*(int*)nullptr = 42; //crash
 	
 	//Parse command line options
 	bool interactive = false;

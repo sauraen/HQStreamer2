@@ -37,7 +37,7 @@
         <MODULEPATH id="juce_events" path="../JuceLibraryCode/modules"/>
       </MODULEPATHS>
     </VS2017>
-    <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraLinkerFlags="-rdynamic">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Release" linkTimeOptimisation="1" recommendedWarnings="GCC"
                        linuxArchitecture="-m64"/>
