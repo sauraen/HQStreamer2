@@ -30,12 +30,12 @@ HQSConnection::~HQSConnection(){
 }
     
 void HQSConnection::connectionMade(){
-    parent.status.PushStatus(STATUS_CONNECTED, "Connection established!", 30);
+    parent.status.PushStatus(STATUS_CONNECTED, "Connection established", 30);
     pingthread.reset(new PingThread(*this));
     pingthread->startThread();
 }
 void HQSConnection::connectionLost(){
-    parent.status.PushStatus(STATUS_DISCONNECTED, "Connection lost!", 30);
+    parent.status.PushStatus(STATUS_DISCONNECTED, "Connection lost!", 90);
     if(pingthread != nullptr){
         pingthread->stopThread(10);
         pingthread.reset(nullptr);

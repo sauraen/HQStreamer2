@@ -37,7 +37,7 @@ Regarding Mac OS 10.15 (Catalina): As an experimental open-source program, HQStr
 
 ## Download
 
-Downloads are in the `Downloads` folder above. 
+Downloads are in the `Downloads` folder above. Choose your platform, then click on the file you want, then on the following page click the Download button. (Don't right-click to save the file.)
 
 On Mac, HQStreamer2.dmg is a standard "installer", containing all versions of the software. After opening the .dmg file on your computer, double-click on InstallForSystem or InstallForUser to install HQStreamer2 for all users or just yourself. Either of these options installs the standalone app and all plugin versions. Please note that InstallForSystem will be compatible with more hosts, but requires admin privileges.
 

@@ -251,7 +251,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         if(memcmp(sha.getRawData().begin(), (char*)message.getData() + 8, 32) == 0){
             sessionname = String(CharPointer_UTF8((char*)message.getData() + 40), HQS2_STRLEN);
 			if(sessionname.isEmpty()){
-				s32ptr2[1] = PACKET_TYPE_NAKHOST;
+				s32ptr2[1] = PACKET_TYPE_ERRHOST;
 				std::cout << TIME_AND_IP << "Host tried to start session with blank name!\n";
 				mode = Mode::Bad;
 			}else{
@@ -268,7 +268,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
 				}
 			}
         }else{
-            s32ptr2[1] = PACKET_TYPE_NAKHOST;
+            s32ptr2[1] = PACKET_TYPE_WRONGPWHOST;
             std::cout << TIME_AND_IP << "Wrong passphrase!\n";
             mode = Mode::Bad;
         }
@@ -281,7 +281,7 @@ void HCRelay::messageReceived(const MemoryBlock& message){
         sessionname = String(CharPointer_UTF8((char*)message.getData() + 8), HQS2_STRLEN);
         const ScopedReadLock lock(parent.mutex);
         if(!parent.sessions.contains(sessionname)){
-            s32ptr2[1] = PACKET_TYPE_NAKJOIN;
+            s32ptr2[1] = PACKET_TYPE_NOSESSJOIN;
             std::cout << TIME_AND_IP << "Client tried to join nonexistent session " << sessionname << "!\n";
             mode = Mode::Bad;
         }else{

@@ -120,7 +120,7 @@ void HCLocal::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
         s32ptr[0] = 20;
         if(session != parent.sessionname){
             parent.status.PushStatus(STATUS_BADAPARAM, "Client tried to connect to bogus session " + session + "!", 30);
-            s32ptr[1] = PACKET_TYPE_NAKJOIN;
+            s32ptr[1] = PACKET_TYPE_NOSESSJOIN;
             sendMessage(packet2);
             return;
         }

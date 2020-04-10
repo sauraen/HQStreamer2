@@ -59,7 +59,7 @@ void MBClient::SetLatency(String lstr){
         r = lstr.dropLastCharacters(1).getFloatValue();
     }
     if(r <= 0.0f || r >= 5.0f){
-        status.PushStatus(STATUS_MISC, "Latency internal error!", 30);
+        status.PushStatus(STATUS_MISC, "Latency internal error!", 22);
         r = 0.5f;
     }
     latencyratio = r;
@@ -70,7 +70,8 @@ void MBClient::Connect(String host, String session){
     sessionname = session;
     conn.reset(new HCClient(*this));
     if(!conn->connectToSocket(host, HQS2_PORT, 1000)){
-        status.PushStatus(STATUS_NOCONNECT, "Could not connect to host");
+        status.PushStatus(STATUS_NOCONNECT, "Could not connect to host \"" + hostname
+            + "\"\nMaybe a network issue or the server is down/crashed?");
         return;
     }
     MemoryBlock packet;
@@ -113,21 +114,23 @@ void HCClient::connectionLost(){
     parent.status.PushStatus(STATUS_DISCONNECTED, "Connection lost", 30);
 }
 
-#define CHECK_PACKET_BOUNDS(i) if((i) >= packet.getSize()) { parent.status.PushStatus(STATUS_BADSIZE, "DPCM ran off end of packet!"); return; } ((void)0)
+#define CHECK_PACKET_BOUNDS(i) if((i) >= sz) { parent.status.PushStatus(STATUS_BADSIZE, "DPCM ran off end of packet!"); return; } ((void)0)
 
 void HCClient::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
     const ScopedReadLock lock(parent.mutex);
     if(!parent.buf) return;
-    int32_t nchannels = -1, nsamples = -1, fs;
+    int nchannels = -1, bufnchannels = parent.buf->NumChannels(), nsamples = -1, fs;
+    int sz = packet.getSize();
     int c, s;
     int32_t* s32ptr = (int32_t*)packet.getData();
     if(type == PACKET_TYPE_ACKJOIN){
         cfgfile.WriteProperty("hostname", parent.hostname);
-        parent.status.PushStatus(STATUS_EVENT, "Connected to host!", 30);
+        parent.status.PushStatus(STATUS_EVENT, "Connected to session!", 30);
         parent.connected = true;
         parent.GetProc().sendChangeMessage();
-    }else if(type == PACKET_TYPE_NAKJOIN){
-        parent.status.PushStatus(STATUS_NOCONNECT, "Host rejected connection!", 30);
+    }else if(type == PACKET_TYPE_NOSESSJOIN){
+        parent.status.PushStatus(STATUS_NOCONNECT, "There is no session \"" + parent.sessionname 
+            + "\" on this server. Maybe the host\nis disconnected or hasn't started streaming yet?", 120);
     }else if(type == PACKET_TYPE_AUDIO_ZEROS 
           || type == PACKET_TYPE_AUDIO_FLOAT32
           || type == PACKET_TYPE_AUDIO_INT16
@@ -142,16 +145,20 @@ void HCClient::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
         parent.rec_channels = nchannels;
         parent.rec_fs = fs;
         parent.audiotype = type;
-        if(nchannels != parent.buf->NumChannels()){
-            parent.status.PushStatus(STATUS_WRONGCHN, "Host is sending " + String((int)nchannels) 
-                + " channels but your DAW is giving this plugin " + String((int)parent.buf->NumChannels()) + " channels!");
-            return;
+        if(nchannels > bufnchannels){
+            parent.status.PushStatus(STATUS_WRONGCHN, "Host is sending " + String(nchannels) 
+                + " channels but your DAW (or audio I/O) is\nset up for only " + String(bufnchannels) 
+                + "! You'll only hear the first " + String(bufnchannels) + " channels.");
+        }else if(nchannels < bufnchannels){
+            parent.status.PushStatus(STATUS_WRONGCHN, "Host is sending only " + String(nchannels) 
+                + " channels but your DAW (or audio I/O)\nis set up for " + String(bufnchannels) 
+                + "! You'll only hear audio in your first " + String(nchannels) + " channels.");
         }else{
             parent.status.ClearStatus(STATUS_WRONGCHN);
         }
         if(fs != parent.fs){
-            parent.status.PushStatus(STATUS_WRONGFS, "Host is sending " + String((int)fs) 
-                + " Hz but your DAW is set to " + String((int)parent.fs) + " Hz!");
+            parent.status.PushStatus(STATUS_WRONGFS, "Error: Host is sending " + String(fs) 
+                + " Hz but your DAW (or audio I/O)\nis set to " + String((int)parent.fs) + " Hz!");
             return;
         }else{
             parent.status.ClearStatus(STATUS_WRONGFS);
@@ -161,51 +168,57 @@ void HCClient::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
         return;
     }
     if(type == PACKET_TYPE_AUDIO_ZEROS){
-        if(packet.getSize() != 20){
-            parent.status.PushStatus(STATUS_BADSIZE, "Bad packet size " + String((int)packet.getSize()) + " for ZEROS type!");
+        if(sz != 20){
+            parent.status.PushStatus(STATUS_BADSIZE, "Bad packet size " + String(sz) + " for ZEROS type!");
             return;
         }else{
             parent.status.ClearStatus(STATUS_BADSIZE);
         }
         for(s=0; s<nsamples; ++s){
-            for(c=0; c<nchannels; ++c){
+            for(c=0; c<bufnchannels; ++c){
                 parent.buf->Write(c, 0.0f);
             }
             parent.buf->WriteAdvance();
         }
     }else if(type == PACKET_TYPE_AUDIO_FLOAT32){
-        if(packet.getSize() != 20+4*nsamples*nchannels){
-            parent.status.PushStatus(STATUS_BADSIZE, "Bad packet size " + String((int)packet.getSize()) + " for FLOAT32 type!");
+        if(sz != 20+4*nsamples*nchannels){
+            parent.status.PushStatus(STATUS_BADSIZE, "Bad packet size " + String(sz) + " for FLOAT32 type!");
             return;
         }else{
             parent.status.ClearStatus(STATUS_BADSIZE);
         }
         float* fptr = (float*)packet.getData();
         for(s=0; s<nsamples; ++s){
-            for(c=0; c<nchannels; ++c){
+            for(c=0; c<nchannels && c<bufnchannels; ++c){
                 parent.buf->Write(c, fptr[5+c*nsamples+s]);
+            }
+            for(; c<bufnchannels; ++c){
+                parent.buf->Write(c, 0.0f);
             }
             parent.buf->WriteAdvance();
         }
     }else if(type == PACKET_TYPE_AUDIO_INT16){
-        if(packet.getSize() != 20+2*nsamples*nchannels){
-            parent.status.PushStatus(STATUS_BADSIZE, "Bad packet size " + String((int)packet.getSize()) + " for INT16 type!");
+        if(sz != 20+2*nsamples*nchannels){
+            parent.status.PushStatus(STATUS_BADSIZE, "Bad packet size " + String(sz) + " for INT16 type!");
             return;
         }else{
             parent.status.ClearStatus(STATUS_BADSIZE);
         }
         int16* iptr = (int16*)packet.getData();
         for(s=0; s<nsamples; ++s){
-            for(c=0; c<nchannels; ++c){
+            for(c=0; c<nchannels && c<bufnchannels; ++c){
                 float temp = (float)(iptr[10+c*nsamples+s]);
                 temp /= 32768.0f;
                 parent.buf->Write(c, temp);
             }
+            for(; c<bufnchannels; ++c){
+                parent.buf->Write(c, 0.0f);
+            }
             parent.buf->WriteAdvance();
         }
     }else if(type == PACKET_TYPE_AUDIO_DPCM){
-        if(packet.getSize() > 20+2*nsamples*nchannels){
-            parent.status.PushStatus(STATUS_BADSIZE, "Bad packet size " + String((int)packet.getSize()) + " for DPCM type!");
+        if(sz > 20+2*nsamples*nchannels){
+            parent.status.PushStatus(STATUS_BADSIZE, "Bad packet size " + String(sz) + " for DPCM type!");
             return;
         }
         uint8* bptr = (uint8*)packet.getData();
@@ -245,8 +258,11 @@ void HCClient::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
         }
         parent.status.ClearStatus(STATUS_BADSIZE);
         for(s=0; s<nsamples; ++s){
-            for(c=0; c<nchannels; ++c){
+            for(c=0; c<nchannels && c<bufnchannels; ++c){
                 parent.buf->Write(c, d[c*nsamples+s]);
+            }
+            for(; c<bufnchannels; ++c){
+                parent.buf->Write(c, 0.0f);
             }
             parent.buf->WriteAdvance();
         }

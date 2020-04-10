@@ -97,7 +97,8 @@
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="0" name="Release" enablePluginBinaryCopyStep="1" winArchitecture="x64"
                        debugInformationFormat="ProgramDatabase" fastMath="1" optimisation="3"
-                       multiProcessorCompilation="1" enableIncrementalLinking="0" linkTimeOptimisation="1"/>
+                       multiProcessorCompilation="1" enableIncrementalLinking="0" linkTimeOptimisation="1"
+                       useRuntimeLibDLL="0"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="JuceLibraryCode/modules"/>

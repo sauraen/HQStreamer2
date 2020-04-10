@@ -135,10 +135,12 @@ void HCSession::VdPacketReceived(const MemoryBlock& packet, int32_t type) {
         parent.sender->startThread();
         parent.status.PushStatus(STATUS_CONNECTED, "Connected!", 30);
         parent.GetProc().sendChangeMessage();
-    }else if(type == PACKET_TYPE_NAKHOST){
-        parent.status.PushStatus(STATUS_NOCONNECT, "Server rejected connection!", 30);
+    }else if(type == PACKET_TYPE_WRONGPWHOST){
+        parent.status.PushStatus(STATUS_NOCONNECT, "Wrong password!", 90);
     }else if(type == PACKET_TYPE_NAMECOLLHOST){
-        parent.status.PushStatus(STATUS_NOCONNECT, "This server already has a session \"" + parent.sessionname + "\"!", 30);
+        parent.status.PushStatus(STATUS_NOCONNECT, "This server already has a session \"" + parent.sessionname + "\"!", 90);
+    }else if(type == PACKET_TYPE_ERRHOST){
+        parent.status.PushStatus(STATUS_NOCONNECT, "Server rejected connection due to other error!", 90);
     }else if(type == PACKET_TYPE_HOSTSTATS){
         parent.numclients = ((int32_t*)packet.getData())[2];
         parent.GetProc().sendChangeMessage();

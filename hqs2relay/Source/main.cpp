@@ -26,7 +26,6 @@
 #include <execinfo.h>
 #include <fcntl.h>
 #include <unistd.h>
-#endif
 
 static int crashfd = 0;
 
@@ -49,7 +48,6 @@ static void CrashHandler(int sig){
     write(crashfd, "CRASH: ", 7);
     write(crashfd, name, 7);
     write(crashfd, "\n", 1);
-#ifdef JUCE_LINUX
 	//Code from backtrace_symbols man page
 	int j, nptrs;
 	#define STACK_SIZE 100
@@ -64,15 +62,16 @@ static void CrashHandler(int sig){
 	}
 	for (j = 0; j < nptrs; j++) WriteRaw(strings[j]);
 	free(strings);
-#endif
 	close(crashfd);
     exit(sig);
 }
+#endif
 
 int main(int argc, char* argv[]){
 	std::cout.setf(std::ios::unitbuf);
 	std::cerr.setf(std::ios::unitbuf);
 	
+#ifdef JUCE_LINUX
 	crashfd = open("crash.log", O_WRONLY | O_TRUNC | O_CREAT);
 	if(crashfd < 0){
 		std::cout << "Could not open crash log file!\n";
@@ -83,6 +82,7 @@ int main(int argc, char* argv[]){
     signal(SIGSEGV, CrashHandler);
     signal(SIGILL,  CrashHandler);
     signal(SIGFPE,  CrashHandler);
+#endif
 	
 	//Parse command line options
 	bool interactive = false;
@@ -156,5 +156,7 @@ int main(int argc, char* argv[]){
 			Thread::sleep(100);
 		}
 	}
+#ifdef JUCE_LINUX
     close(crashfd);
+#endif
 }
