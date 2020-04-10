@@ -79,7 +79,18 @@ Simply run the executable (HQStreamer2.exe on Windows or HQStreamer2.app on Mac)
 
 ### Relay
 
-Open port 21568 for bidirectional TCP. Run hqs2relay in the background (Linux/Mac: `./hqs2relay > relay_cout.txt &`).
+##### General info:
+
+* Port 21568 must be open for bidirectional TCP.
+* To set up the passphrase for hosting sessions, do ./hqs2relay --setpassphrase, then when prompted enter the new passphrase. It is stored hashed (not in plaintext) in HQStreamer2/hqs2relay.cfg in your user application data directory (`C:\Users\your_name\AppData\Roaming\`, `~/Library/`, or `~/.config/` for Windows/Mac/Linux respectively).
+
+##### Linux build and run:
+
+* `sudo apt install build-essential` (and `git` to obtain the repo in the first place)
+* `git clone https://github.com/sauraen/HQStreamer2 && cd HQStreamer2` or otherwise obtain the repo
+* `cd hqs2relay/Builds/LinuxMakefile && make`
+* `cd build && cp ../../../Downloads/linux_x64/autorun.sh . && chmod a+x autorun.sh`
+* `autorun.sh &`. When you need to stop this, do `top -u your_name`, then find the `bash` PID which is close in number to the `hqs2relay` PID, and then kill that process. Examine the logs routinely (no need to stop HQStreamer2) and let Sauraen know of any crash info.
 
 
 ## HQStreamer2 Usage
