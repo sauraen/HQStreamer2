@@ -83,6 +83,7 @@ Simply run the executable (HQStreamer2.exe on Windows or HQStreamer2.app on Mac)
 
 * Port 21568 must be open for bidirectional TCP.
 * To set up the passphrase for hosting sessions, do ./hqs2relay --setpassphrase, then when prompted enter the new passphrase. It is stored hashed (not in plaintext) in HQStreamer2/hqs2relay.cfg in your user application data directory (`C:\Users\your_name\AppData\Roaming\`, `~/Library/`, or `~/.config/` for Windows/Mac/Linux respectively).
+* You can also run `./hqs2relay -i` to run in interactive mode, where you can examine connected users and kick sessions. But this requires `screen` or some other mechanism to allow you to keep having input available, otherwise when you background the process it will grind to a halt (the actual routing too).
 
 ##### Linux build and run:
 
