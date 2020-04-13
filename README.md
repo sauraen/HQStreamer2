@@ -1,4 +1,4 @@
-HQStreamer2 - Stream audio between DAWs across the internet
+**HQStreamer2** - Stream audio between DAWs across the internet
 Copyright (C) 2020 Sauraen, <sauraen@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
@@ -14,7 +14,9 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-## See below for download and installation instructions!
+## Download Instructions
+
+Downloads are in the `Downloads` folder above. Here are detailed download/install/run instructions [for Windows](https://github.com/sauraen/HQStreamer2/wiki/Download-and-run-instructions---Windows) and [for Mac](https://github.com/sauraen/HQStreamer2/wiki/Download-and-run-instructions---Mac).
 
 ## General
 
@@ -33,15 +35,6 @@ A VST2 version of HQStreamer2 can technically be built, but due to Steinberg lic
 Regarding Mac OS 10.15 (Catalina): As an experimental open-source program, HQStreamer2 is neither code-signed nor notarized by Apple. Apple does not officially support such software on Catalina, and may completely ban all such software on future versions of Mac OS. However, there is a workaround to permit individual programs to run on Catalina despite these restrictions.
 * For standalone or relay: Right-click or Ctrl-click on the app and choose Open. In the security dialog box that pops up, choose Open.
 * For the plugins: After you attempt to load the plugin into your DAW and receive the security warning, close your DAW. Go to the Apple menu  > System Preferences > Security & Privacy > General. There will be a notice about HQStreamer2 being unidentified. Click the Open Anyway button, then reopen your DAW and if necessary rescan for plugins.
-
-
-## Download
-
-Downloads are in the `Downloads` folder above. Choose your platform, then click on the file you want, then on the following page click the Download button. (Don't right-click to save the file.)
-
-On Mac, HQStreamer2.dmg is a standard "installer", containing all versions of the software. After opening the .dmg file on your computer, double-click on InstallForSystem or InstallForUser to install HQStreamer2 for all users or just yourself. Either of these options installs the standalone app and all plugin versions. Please note that InstallForSystem will be compatible with more hosts, but requires admin privileges.
-
-If you are a developer, please clone (or fork) the repo. Pull requests are welcome!
 
 
 ## Manual Installation
@@ -157,11 +150,11 @@ The controls for joining a session are:
 
 #### The buffer is flashing colors and rapidly wiping across the screen, and I don't hear any audio!
 
-First, check for an error message in the status at the top of the plugin. A common issue is a message saying that the host is sending audio at a different sample rate than your DAW is set to. In this case, change the sample rate in your DAW and the problem should fix itself (no need to disconnect/restart the plugin).
+First, check for an error message in the status at the top of the plugin. A common issue is a message saying that the host is sending audio at a different sample rate than your DAW is set to. In this case, change the sample rate in your DAW (or using Options > Audio/MIDI settings if this is standalone) and the problem should fix itself (no need to disconnect/restart the plugin).
 
-If there's no error message (the status says "OK"):
-* If you're a client and the buffer is wiping from the middle to the right, this means your DAW has stopped processing the plugin (taking audio out of the buffer), while the network is still putting incoming audio into the buffer. Different DAWs have different policies about when to process plugins, but they may stop processing it if playback is stopped, if the track is not record armed or monitoring, or if the DAW has lost focus. Try fixing these issues and the audio should resume.
-* If you're a client and the buffer is wiping from the middle to the left, this means no new audio is being received from the network while the plugin is still being processed, but the network connection is still established. Typically this means something is wrong with the host's DAW processing.
+If there's no error message (the status says "OK"), and you're a client:
+* If the buffer is wiping from the middle to the right, this means your DAW has stopped processing the plugin (taking audio out of the buffer), while the network is still putting incoming audio into the buffer. Different DAWs have different policies about when to process plugins, but they may stop processing it if playback is stopped, if the track is not record armed or monitoring, or if the DAW has lost focus. Try fixing these issues and the audio should resume.
+* If the buffer is wiping from the middle to the left, this means no new audio is being received from the network while the plugin is still being processed, but the network connection is still established. Typically this means the host's DAW is temporarily not processing the plugin, as described in the point above. You as a client can't do anything about this, other than telling the host to fix it on their end.
 
 ## TODOs
 
